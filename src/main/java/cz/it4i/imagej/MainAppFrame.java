@@ -119,13 +119,7 @@ public class MainAppFrame extends JFrame {
 					} else {
 						setText(item.toString());
 						setTextFill(Paint.valueOf("black"));
-						if(item > 0.75) {
-							setStyle("-fx-background-color: red");
-						} else if(item >= 0.5) {
-							setStyle("-fx-background-color: lightyellow");
-						} else {
-							setStyle("-fx-background-color: lightgreen");
-						}						
+						setStyle("-fx-background-color:"+cellColor(item)+";");
 					}
 				}
 			};
@@ -143,25 +137,19 @@ public class MainAppFrame extends JFrame {
 					} else {
 						setText(item.toString());
 						setTextFill(Paint.valueOf("black"));
-						if(item > 0.75) {
-							setStyle("-fx-background-color: red");
-						} else if(item >= 0.5) {
-							setStyle("-fx-background-color: lightyellow");
-						} else {
-							setStyle("-fx-background-color: lightgreen");
-						}
+						setStyle("-fx-background-color: "+cellColor(item)+";");
 						
 					}
 				}
 			};
-		});
+		});		
 		
-		ObservableList<NodeInfo> data =
-				FXCollections.observableArrayList(
-						new NodeInfo(0, 1, 0.25),
-						new NodeInfo(1, 0.5, 0.5),
-						new NodeInfo(2, 0.25, 1)
-		);
+		ObservableList<NodeInfo> data = FXCollections.observableArrayList();
+		
+		numberOfNodes = 20; //10000;
+		for(int i = 0; i < this.numberOfNodes; i++) {
+			data.add(new NodeInfo(i, (double)i/this.numberOfNodes, 1.0 - (double)i/this.numberOfNodes));			
+		}
 		
 		// Table row double-click event:
 		table.setRowFactory(tv -> {
@@ -257,6 +245,23 @@ public class MainAppFrame extends JFrame {
 		lineChart.getData().add(cpuUtilizationDataSeries);
 		
 		return lineChart;
+    }
+    
+    private String cellColor(Double item) {
+    	String[] colors = {
+    			"#04f700", 
+    			"#9ff700", 
+    			"#dff700", 
+    			"#f7dd00", 
+    			"#f7b400", 
+    			"#f78f00", 
+    			"#f76e00",
+    			"#f73300",
+    			"#f71900", 
+    			"#f70000"
+    	};
+    	
+    	return colors[(int)Math.floor(item * 9)];
     }
     
     private double[] runMonitor(String choice){
