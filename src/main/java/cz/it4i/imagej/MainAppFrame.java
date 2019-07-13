@@ -1,7 +1,9 @@
 package cz.it4i.imagej;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -29,10 +31,13 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javax.swing.JFrame;
 import net.imagej.ImageJ;
+
+import org.scijava.Context;
 import org.scijava.log.LogService;
+import org.scijava.parallel.ParallelizationParadigm;
 import org.scijava.plugin.Parameter;
 
-import com.sun.management.OperatingSystemMXBean;
+import cz.it4i.parallel.utils.TestParadigm;
 
 public class MainAppFrame extends JFrame {
 
@@ -50,7 +55,10 @@ public class MainAppFrame extends JFrame {
     
     private SimpleIntegerProperty selectedNodeProperty = new SimpleIntegerProperty(this, "selectedNodeProperty");
     
-	//
+	// Paradigm related variables:
+	final Context context = new Context();
+	final ParallelizationParadigm paradigm = TestParadigm.localImageJServer( "C:\\Fiji.app\\ImageJ-win64.exe", context );
+	
     @Parameter
     private LogService log;
 
@@ -70,6 +78,16 @@ public class MainAppFrame extends JFrame {
         this.fxPanel = new JFXPanel();
         this.add(this.fxPanel);
         this.setVisible(true);
+        
+        // When the Swing Frame closes close the paradigm:
+        Platform.setImplicitExit(false);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                paradigm.close();             
+            }    
+        });
 
         // The call to runLater() avoid a mix between JavaFX thread and Swing thread.
         Platform.runLater(new Runnable() {
@@ -86,8 +104,7 @@ public class MainAppFrame extends JFrame {
     	
 		this.fxPanel.setScene(overviewScene);
 		this.setSize(600, 800);
-		this.fxPanel.show();
-		
+		this.fxPanel.setVisible(true);
     }
     
     private Scene createOverviewScene() {
@@ -265,35 +282,21 @@ public class MainAppFrame extends JFrame {
     }
     
     private double[] runMonitor(String choice){
-    	if(choice == "memory") {
-    		double[] results = new double[2];
+	 	double[] point = new double[2];
+  	   	
+		// Get the CPU Utilization from the local Fiji server:	
+		List<Map<String, Object>> results = paradigm.runAll(
+   				UtilizationDataCollector.class, Collections.singletonList(new HashMap<>()));  
     	
-	    	OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(
-					OperatingSystemMXBean.class);
-			RuntimeMXBean runtimeBean = ManagementFactory.getRuntimeMXBean();
-			results[0] = runtimeBean.getUptime();
-	    	
-			// Bellow measurements are in bytes:
-			double totalPhysicalMemorySize = osBean.getTotalPhysicalMemorySize();
-			
-			double freePhysicalMemorySize = osBean.getFreePhysicalMemorySize();
-			
-			double usedPhysicalMemory = totalPhysicalMemorySize - freePhysicalMemorySize;
-			
-			// Calculate the utilization (in [0.0,1.0] interval):
-			results[1] = usedPhysicalMemory/totalPhysicalMemorySize;
-			return results;
+    	if(choice == "memory") {	
+	   		point[0] = new Double( (Integer)results.get(0).get("uptime"));
+    		point[1] = (Double) results.get(0).get("memoryUtilization");
+    		return point;    
     	} else {
-    		RuntimeMXBean runtimeBean = ManagementFactory.getRuntimeMXBean();
-        	
-        	double[] results = new double[2];
-
-    		OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(
-    			OperatingSystemMXBean.class);
-    		
-    		results[0] = runtimeBean.getUptime();
-    		results[1] = osBean.getSystemCpuLoad();
-    		return results;    	
+      	  		
+			point[0] = new Double( (Integer)results.get(0).get("uptime"));
+    		point[1] = (Double) results.get(0).get("systemCpuLoad");    		
+    		return point;    	
     	}
     }
 }

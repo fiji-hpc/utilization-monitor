@@ -12,9 +12,10 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @SuppressWarnings("restriction")
-@Plugin(headless = true, type = Command.class, menuPath = "Plugins>Utilities>CPU Load")
-public class CpuLoadExplorer implements Command {
+@Plugin(headless = true, type = Command.class, menuPath = "Plugins>Utilities>Utilization Data Collector")
+public class UtilizationDataCollector implements Command {
 
+	// CPU utilization metrics:
 	@Parameter(type = ItemIO.OUTPUT)
 	private long uptime;
 
@@ -27,12 +28,23 @@ public class CpuLoadExplorer implements Command {
 	@Parameter(type = ItemIO.OUTPUT)
 	private double systemLoadAverage;
 
+	// Memory utilization metrics:
+	@Parameter(type = ItemIO.OUTPUT)
+	private double totalPhysicalMemorySize;
+
+	@Parameter(type = ItemIO.OUTPUT)
+	private double freePhysicalMemorySize;
+	
+	@Parameter(type = ItemIO.OUTPUT)
+	private double memoryUtilization;
+	
 	@Override
-	public void run() {
+	public void run() {		
 		// In milliseconds:
 		RuntimeMXBean runtimeBean = ManagementFactory.getRuntimeMXBean();
 		uptime = runtimeBean.getUptime();
 
+		// CPU:
 		OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(
 			OperatingSystemMXBean.class);
 		
@@ -42,6 +54,17 @@ public class CpuLoadExplorer implements Command {
 		
 		// The bellow functionality is not supported on Windows, it always outputs "-1":
 		systemLoadAverage = osBean.getSystemLoadAverage();
+		
+		// Memory:		
+		// Bellow measurements are in bytes:
+		totalPhysicalMemorySize = osBean.getTotalPhysicalMemorySize();
+		
+		freePhysicalMemorySize = osBean.getFreePhysicalMemorySize();
+		
+		double usedPhysicalMemory = totalPhysicalMemorySize - freePhysicalMemorySize;
+		
+		// Calculate the utilization (in [0.0,1.0] interval):
+		memoryUtilization = usedPhysicalMemory/totalPhysicalMemorySize;
 	}
 
 }
