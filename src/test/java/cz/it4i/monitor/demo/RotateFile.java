@@ -22,7 +22,6 @@ import org.scijava.Context;
 import org.scijava.parallel.ParallelizationParadigm;
 
 import cz.it4i.parallel.Routines;
-import cz.it4i.parallel.utils.TestParadigm;
 
 /**
  * Demonstration example showing basic usage of ParalellizationParadigm with

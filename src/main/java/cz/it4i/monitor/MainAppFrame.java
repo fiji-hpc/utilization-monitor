@@ -57,8 +57,7 @@ public class MainAppFrame extends JFrame {
     private SimpleIntegerProperty selectedNodeProperty = new SimpleIntegerProperty(this, "selectedNodeProperty");
     
 	// Paradigm related variables:
-	final Context context = new Context();
-	final ParallelizationParadigm paradigm = TestParadigm.localImageJServer( "C:\\Fiji.app\\ImageJ-win64.exe", context );
+	final ParallelizationParadigm paradigm;
 	
     @Parameter
     private LogService log;
@@ -67,9 +66,10 @@ public class MainAppFrame extends JFrame {
 
     private JFXPanel fxPanel;
 
-    public MainAppFrame(ImageJ ij) {
+    public MainAppFrame(ImageJ ij, ParallelizationParadigm paradigm) {
         ij.context().inject(this);
         this.ij = ij;
+        this.paradigm = paradigm;
     }
 
     /**
@@ -86,7 +86,7 @@ public class MainAppFrame extends JFrame {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosed(java.awt.event.WindowEvent evt) {
-                paradigm.close();             
+            	// Do nothing else.
             }    
         });
 
