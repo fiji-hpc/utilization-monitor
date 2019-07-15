@@ -1,5 +1,6 @@
-package cz.it4i.imagej;
+package cz.it4i.monitor.demo;
 
+import cz.it4i.monitor.UtilizationMonitor;
 import net.imagej.ImageJ;
 
 public class Main {
@@ -17,7 +18,7 @@ public class Main {
         ij.ui().showUI();
 
         // invoke the plugin
-        ij.command().run(UtilizationMonitor.class, true);
+        //ij.command().run(UtilizationMonitor.class, true);
     }
 }
 

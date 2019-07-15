@@ -1,4 +1,4 @@
-package cz.it4i.imagej;
+package cz.it4i.monitor;
 
 public class NodeInfo {
 	

@@ -1,5 +1,5 @@
 
-package cz.it4i.imagej;
+package cz.it4i.monitor;
 
 import com.sun.management.OperatingSystemMXBean;
 

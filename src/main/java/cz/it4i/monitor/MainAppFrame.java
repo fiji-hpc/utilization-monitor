@@ -1,4 +1,4 @@
-package cz.it4i.imagej;
+package cz.it4i.monitor;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
@@ -244,8 +245,8 @@ public class MainAppFrame extends JFrame {
 		lineChart.setStyle("CHART_COLOR_1: "+colour+" ;");
 		lineChart.setAnimated(false);
 		
-		XYChart.Series<Double, Double> cpuUtilizationDataSeries = new XYChart.Series();
-		cpuUtilizationDataSeries.setName(name);
+		XYChart.Series<Double, Double> dataSeries = new Series<Double, Double>();
+		dataSeries.setName(name);
 		
 		// Put data in the chart periodically:
 		scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
@@ -253,13 +254,13 @@ public class MainAppFrame extends JFrame {
 			double[] point = runMonitor(type);
 			
 			Platform.runLater(() -> {
-			        cpuUtilizationDataSeries.getData().add(new XYChart.Data<>(point[0], point[1]));
+			        dataSeries.getData().add(new XYChart.Data<>(point[0], point[1]));
 			        
-			        if (cpuUtilizationDataSeries.getData().size() > MAX_POINTS_ON_CHART)
-			        	cpuUtilizationDataSeries.getData().remove(0);
+			        if (dataSeries.getData().size() > MAX_POINTS_ON_CHART)
+			        	dataSeries.getData().remove(0);
 		    });
 		}, 0, 1, TimeUnit.SECONDS);
-		lineChart.getData().add(cpuUtilizationDataSeries);
+		lineChart.getData().add(dataSeries);
 		
 		return lineChart;
     }
