@@ -12,7 +12,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @SuppressWarnings("restriction")
-@Plugin(headless = true, type = Command.class, menuPath = "Plugins>Utilities>Utilization Data Collector")
+@Plugin(headless = true, type = Command.class, menuPath = "Plugins>Utilities>Utilization Data Collector", visible = false)
 public class UtilizationDataCollector implements Command {
 
 	// CPU utilization metrics:

@@ -287,12 +287,13 @@ public class MainAppFrame extends JFrame {
   	   	
 		// Get the CPU Utilization from the local Fiji server:	
 		List<Map<String, Object>> results = paradigm.runAll(
-   				UtilizationDataCollector.class, Collections.singletonList(new HashMap<>()));  
+   				UtilizationDataCollector.class, Collections.singletonList(new HashMap<>()));
+		System.out.println("--------------> Results: "+results.toString());
     	
-    	if(choice == "memory") {	
+    	if(choice == "memory") {
 	   		point[0] = new Double( (Integer)results.get(0).get("uptime"));
     		point[1] = (Double) results.get(0).get("memoryUtilization");
-    		return point;    
+    		return point;
     	} else {
       	  		
 			point[0] = new Double( (Integer)results.get(0).get("uptime"));

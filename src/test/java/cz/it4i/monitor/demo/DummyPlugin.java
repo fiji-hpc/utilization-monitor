@@ -12,6 +12,8 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 import cz.it4i.monitor.UtilizationMonitor;
+import cz.it4i.parallel.runners.AbstractImageJServerRunner;
+import cz.it4i.parallel.ui.HPCImageJServerRunnerWithUI;
 import cz.it4i.parallel.utils.TestParadigm;
 import net.imagej.ImageJ;
 
@@ -24,9 +26,11 @@ public class DummyPlugin implements Command {
 	
 	@Override
 	public void run() {
-		final Context context = new Context();
 		String fijiExecutable = Config.getFijiExecutable();
-		try ( ParallelizationParadigm paradigm = TestParadigm.localImageJServer( fijiExecutable, context ) ) {
+		
+		AbstractImageJServerRunner runner = HPCImageJServerRunnerWithUI.gui( ij.context() );
+		
+		try ( ParallelizationParadigm paradigm = new TestParadigm( runner, ij.context() ) ) {
 			
 			Map<String, Object> parameters = new HashMap<>();
 			parameters.put("paradigm", paradigm);			
