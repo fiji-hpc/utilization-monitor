@@ -38,6 +38,7 @@ import org.scijava.log.LogService;
 import org.scijava.parallel.ParallelizationParadigm;
 import org.scijava.plugin.Parameter;
 
+import cz.it4i.parallel.MultipleHostParadigm;
 import cz.it4i.parallel.utils.TestParadigm;
 
 public class MainAppFrame extends JFrame {
@@ -57,7 +58,7 @@ public class MainAppFrame extends JFrame {
     private SimpleIntegerProperty selectedNodeProperty = new SimpleIntegerProperty(this, "selectedNodeProperty");
     
 	// Paradigm related variables:
-	final ParallelizationParadigm paradigm;
+	final MultipleHostParadigm paradigm;
 	
     @Parameter
     private LogService log;
@@ -66,7 +67,7 @@ public class MainAppFrame extends JFrame {
 
     private JFXPanel fxPanel;
 
-    public MainAppFrame(ImageJ ij, ParallelizationParadigm paradigm) {
+    public MainAppFrame(ImageJ ij, MultipleHostParadigm paradigm) {
         ij.context().inject(this);
         this.ij = ij;
         this.paradigm = paradigm;
@@ -285,10 +286,10 @@ public class MainAppFrame extends JFrame {
     private double[] runMonitor(String choice){
 	 	double[] point = new double[2];
   	   	
-		// Get the CPU Utilization from the local Fiji server:	
-		List<Map<String, Object>> results = paradigm.runAll(
-   				UtilizationDataCollector.class, Collections.singletonList(new HashMap<>()));
-		System.out.println("--------------> Results: "+results.toString());
+		// Get the utilization from the local Fiji server:
+	 	HashMap parameters = new HashMap<>();
+		List<Map<String, Object>> results = paradigm.runOnHosts(
+				UtilizationDataCollector.class.getName(), parameters, paradigm.getHosts());
     	
     	if(choice == "memory") {
 	   		point[0] = new Double( (Integer)results.get(0).get("uptime"));

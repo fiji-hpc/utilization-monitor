@@ -5,6 +5,8 @@ import org.scijava.command.Command;
 import org.scijava.parallel.ParallelizationParadigm;
 import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
+
+import cz.it4i.parallel.MultipleHostParadigm;
 import net.imagej.ImageJ;
 
 @Plugin(type = Command.class, menuPath = "Plugins>Utilities>Utilization Monitor")
@@ -14,7 +16,7 @@ public class UtilizationMonitor implements Command {
     private ImageJ ij;
 	
 	@Parameter(type = ItemIO.INPUT)
-	private ParallelizationParadigm paradigm;
+	private MultipleHostParadigm paradigm;
    
     @Override
     public void run() {    	

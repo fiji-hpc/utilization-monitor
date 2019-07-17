@@ -1,6 +1,5 @@
 package cz.it4i.monitor.demo;
 
-import cz.it4i.monitor.UtilizationMonitor;
 import net.imagej.ImageJ;
 
 public class Main {
