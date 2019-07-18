@@ -37,18 +37,18 @@ public class DummyPlugin implements Command {
 	public void run() {
 		
 		context = ij.context();
-		try ( MultipleHostParadigm paradigm = constructParadigm()) {			
-			Map<String, Object> parameters = new HashMap<>();
-			parameters.put("paradigm", paradigm);			
-			ij.command().run(UtilizationMonitor.class, true, parameters );
-			
-//			try {
-				//RotateFile.callRemotePlugin(paradigm, 200);
-				this.callSimpleRemotePlugin(paradigm);				
-				
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
+		try ( MultipleHostParadigm paradigm = constructParadigm()) {
+//			Map<String, Object> parameters = new HashMap<>();
+//			parameters.put("paradigm", paradigm);			
+//			ij.command().run(UtilizationMonitor.class, true, parameters );
+//			
+////			try {
+//				//RotateFile.callRemotePlugin(paradigm, 200);
+//				this.callSimpleRemotePlugin(paradigm);				
+//				
+////			} catch (IOException e) {
+////				e.printStackTrace();
+////			}
 		}
 	}
 	

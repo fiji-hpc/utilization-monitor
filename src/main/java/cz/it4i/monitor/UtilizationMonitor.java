@@ -15,13 +15,13 @@ public class UtilizationMonitor implements Command {
 	@Parameter(type = ItemIO.INPUT)
     private ImageJ ij;
 	
-	@Parameter(type = ItemIO.INPUT)
-	private MultipleHostParadigm paradigm;
+//	@Parameter(type = ItemIO.INPUT)
+//	private MultipleHostParadigm paradigm;
    
     @Override
     public void run() {    	
         // Launch JavaFX interface
-        MainAppFrame app = new MainAppFrame(ij, paradigm);
+        MainAppFrame app = new MainAppFrame(ij);//, paradigm);
         app.setTitle(" Utilization Monitor ");
         app.init();
     }
