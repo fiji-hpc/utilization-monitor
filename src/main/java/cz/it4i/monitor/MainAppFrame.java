@@ -185,12 +185,12 @@ public class MainAppFrame extends JFrame {
 					memorySeries.setName("Memory Utilization");
 					Double uptime = MainAppFrame.nodeInfoList.get(MainAppFrame.selectedNode).getDataFromHistory(time, "uptime");
 					Double cpu = MainAppFrame.nodeInfoList.get(MainAppFrame.selectedNode).getDataFromHistory(time, "systemCpuLoad");
-					Double memory = MainAppFrame.nodeInfoList.get(MainAppFrame.selectedNode).getDataFromHistory(time, "systemCpuLoad");
+					Double memory = MainAppFrame.nodeInfoList.get(MainAppFrame.selectedNode).getDataFromHistory(time, "memoryUtilization");
 					cpuSeries.getData().add(
-							new XYChart.Data<Double, Double>(uptime, cpu)
+							new XYChart.Data<Double, Double>(uptime / 1000.0, cpu*100)
 					);
 					memorySeries.getData().add(
-							new XYChart.Data<Double, Double>(uptime, memory)
+							new XYChart.Data<Double, Double>(uptime / 1000.0, memory*100)
 					);
 				}
 				if(cpuObservableDataSeries.size() == 0) {
@@ -207,7 +207,7 @@ public class MainAppFrame extends JFrame {
     // Fake fakeRunAll function that returns fake mockup data:
     private static List<Map<String, Object>> fakeRunAll() {
     	Random rand = new Random();
-    	fakeTime += 100;
+    	fakeTime += 1000;
     	int fakeNumberOfNodes = 5;
     	List<Map<String, Object>> allData = new LinkedList<>();
 		for(int index = 0; index < fakeNumberOfNodes; index++) {

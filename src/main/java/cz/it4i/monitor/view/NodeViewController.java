@@ -43,11 +43,11 @@ public class NodeViewController {
     private void initialize() {	
     	nodeLabel.textProperty().bind(MainAppFrame.selectedNodeProperty.asString());		  
     	
-    	setupAxis(xAxisCpuUtilization, yAxisCpuUtilization, "CPU utilization");
-    	setupAxis(xAxisMemoryUtilization, yAxisMemoryUtilization, "Memory utilization");
+    	setupAxis(xAxisCpuUtilization, yAxisCpuUtilization, "CPU utilization (%) ");
+    	setupAxis(xAxisMemoryUtilization, yAxisMemoryUtilization, "Memory utilization (%) ");
     	
-    	cpuUtilizationLineChart.setTitle("CPU utilization over uptime");
-    	memoryUtilizationLineChart.setTitle("Memory utilization over uptime");
+    	cpuUtilizationLineChart.setTitle("CPU utilization (%) over uptime (s).");
+    	memoryUtilizationLineChart.setTitle("Memory utilization (%) over uptime (s).");
     	
     	cpuUtilizationLineChart.setStyle("CHART_COLOR_1: LightSkyBlue ;");
     	memoryUtilizationLineChart.setStyle("CHART_COLOR_1: SlateBlue ;");
@@ -67,14 +67,14 @@ public class NodeViewController {
     
     private void setupAxis(NumberAxis xAxis, NumberAxis yAxis, String name) {
     	xAxis.setForceZeroInRange(false);
-    	xAxis.setLabel("uptime (ms)");    	
+    	xAxis.setLabel("uptime (s)");    	
     	xAxis.setForceZeroInRange(false);
     	
     	yAxis.setLabel(name);
 		yAxis.setAutoRanging(false);
 		yAxis.setLowerBound(0);
-		yAxis.setUpperBound(1);
-		yAxis.setTickUnit(0.1);
+		yAxis.setUpperBound(100);
+		yAxis.setTickUnit(10);
 		yAxis.setAnimated(false);
     }
 }

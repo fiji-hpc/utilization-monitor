@@ -1,6 +1,5 @@
 package cz.it4i.monitor.view;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -10,8 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Paint;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.text.DecimalFormat;
 
 import cz.it4i.monitor.MainAppFrame;
 import cz.it4i.monitor.model.NodeInfo;
@@ -29,6 +27,8 @@ public class OverviewViewController {
     @FXML
     private TableColumn<NodeInfo, Double> memoryUtilizationColumn;
 
+    private DecimalFormat format = new DecimalFormat("0.00");
+    
     // Reference to the main application.
     private MainAppFrame mainAppFrame;
 
@@ -45,42 +45,8 @@ public class OverviewViewController {
     	this.memoryUtilizationColumn.setCellValueFactory(new PropertyValueFactory<>("memoryUtilization"));
     			
 		// Update the cell colors according to utilization:
-    	cpuUtilizationColumn.setCellFactory(column -> {
-			return new TableCell<NodeInfo, Double>(){
-				@Override
-				protected void updateItem(Double item, boolean empty) {
-					super.updateItem(item, empty);
-					
-					if(item == null || empty) {
-						setText(null);
-						setStyle("");
-					} else {
-						setText(item.toString());
-						setTextFill(Paint.valueOf("black"));
-						setStyle("-fx-background-color:"+cellColor(item)+";");
-					}
-				}
-			};
-		});
-		
-    	// Update the cell colors according to utilization:
-		memoryUtilizationColumn.setCellFactory(column -> {
-			return new TableCell<NodeInfo, Double>(){
-				@Override
-				protected void updateItem(Double item, boolean empty) {
-					super.updateItem(item, empty);
-					
-					if(item == null || empty) {
-						setText(null);
-						setStyle("");
-					} else {
-						setText(item.toString());
-						setTextFill(Paint.valueOf("black"));
-						setStyle("-fx-background-color: "+cellColor(item)+";");						
-					}
-				}
-			};
-		});
+    	setColumnStyle(cpuUtilizationColumn);
+    	setColumnStyle(memoryUtilizationColumn);
 		
 		// Table row double-click event:
 		table.setRowFactory(tv -> {
@@ -106,6 +72,27 @@ public class OverviewViewController {
         
         // Add observable list data to the table
         table.setItems(MainAppFrame.tableData);
+    }
+    
+    // Update the cell colors according to utilization and set the double formating:
+    private void setColumnStyle(TableColumn<NodeInfo, Double> column) {
+    	column.setCellFactory(cell -> {
+			return new TableCell<NodeInfo, Double>(){
+				@Override
+				protected void updateItem(Double item, boolean empty) {
+					super.updateItem(item, empty);
+					
+					if(item == null || empty) {
+						setText(null);
+						setStyle("");
+					} else {
+						setText(format.format(item*100));
+						setTextFill(Paint.valueOf("black"));
+						setStyle("-fx-background-color:"+cellColor(item)+";");
+					}
+				}
+			};
+		});
     }
 
     // Helper function that sets the appropriate color according to the utilization level:
