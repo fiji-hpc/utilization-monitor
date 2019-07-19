@@ -12,6 +12,12 @@ public class NodeViewController {
     private Label nodeLabel;
     
     @FXML
+    private Label totalPhysicalMemorySizeLabel;
+    
+    @FXML
+    private Label availableProcessorsLabel;
+    
+    @FXML
     private LineChart<Double, Double> cpuUtilizationLineChart;
     
     @FXML
@@ -40,8 +46,11 @@ public class NodeViewController {
     }
 
     @FXML
-    private void initialize() {	
-    	nodeLabel.textProperty().bind(MainAppFrame.selectedNodeProperty.asString());		  
+    private void initialize() {
+    	nodeLabel.textProperty().bind(MainAppFrame.selectedNodeProperty.asString());
+    	
+    	totalPhysicalMemorySizeLabel.textProperty().bind(MainAppFrame.totalPhysicalMemorySizeProperty.asString());
+    	availableProcessorsLabel.textProperty().bind(MainAppFrame.availableProcessorsProperty.asString());
     	
     	setupAxis(xAxisCpuUtilization, yAxisCpuUtilization, "CPU utilization (%) ");
     	setupAxis(xAxisMemoryUtilization, yAxisMemoryUtilization, "Memory utilization (%) ");

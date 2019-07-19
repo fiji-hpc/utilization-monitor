@@ -38,6 +38,9 @@ public class UtilizationDataCollector implements Command {
 	@Parameter(type = ItemIO.OUTPUT)
 	private double memoryUtilization;
 	
+	@Parameter(type = ItemIO.OUTPUT)
+	private long availableProcessors;
+	
 	@Override
 	public void run() {		
 		// In milliseconds:
@@ -51,6 +54,8 @@ public class UtilizationDataCollector implements Command {
 		processCpuLoad = osBean.getProcessCpuLoad();
 		
 		systemCpuLoad = osBean.getSystemCpuLoad();
+		
+		availableProcessors = osBean.getAvailableProcessors();
 		
 		// The bellow functionality is not supported on Windows, it always outputs "-1":
 		systemLoadAverage = osBean.getSystemLoadAverage();

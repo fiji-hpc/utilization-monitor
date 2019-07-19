@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import javafx.application.Platform;
 import javafx.beans.binding.IntegerExpression;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,6 +39,10 @@ import cz.it4i.parallel.utils.TestParadigm;
 
 public class MainAppFrame extends JFrame {
 	public static SimpleIntegerProperty selectedNodeProperty = new SimpleIntegerProperty(MainAppFrame.class, "selectedNodeProperty");
+	
+	public static SimpleIntegerProperty availableProcessorsProperty = new SimpleIntegerProperty(MainAppFrame.class, "availableProcessorsProperty");
+	
+	public static SimpleDoubleProperty totalPhysicalMemorySizeProperty = new SimpleDoubleProperty(MainAppFrame.class, "totalPhysicalMemorySizeProperty");
 	
 	public static ObservableList<XYChart.Series<Double, Double>> cpuObservableDataSeries = FXCollections.observableArrayList();
 	
@@ -132,7 +137,7 @@ public class MainAppFrame extends JFrame {
 		this.fxPanel.setVisible(true);
     }
     
-    public static List<Map<String, Object>> runMockupMonitor() {
+    public static List<Map<String, Object>> runMonitor() {
     	List<Map<String, Object>> allData = new LinkedList<>();
     	
     	allData = MainAppFrame.fakeRunAll();
@@ -155,8 +160,9 @@ public class MainAppFrame extends JFrame {
     		}
     	}
     	
-    	// Add new data to the history of each node:
+    	
     	for(int index = 0; index < numberOfNodes; index++) {
+    		// Add new data to the history of each node:
     		nodeInfoList.get(index).addToHistory(allData.get(index));
     	}
     	
@@ -168,7 +174,7 @@ public class MainAppFrame extends JFrame {
 		MainAppFrame.scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 		MainAppFrame.scheduledExecutorService.scheduleAtFixedRate(() -> {
 			Platform.runLater(() -> {
-				MainAppFrame.runMockupMonitor();
+				MainAppFrame.runMonitor();
 				
 				// Update the table row data: 
 				for(int index = 0; index < MainAppFrame.tableData.size(); index++) {
@@ -180,12 +186,20 @@ public class MainAppFrame extends JFrame {
 				Series<Double, Double> cpuSeries = new Series<Double, Double>();
 				Series<Double, Double> memorySeries = new Series<Double, Double>();
 				for(int time = 0; time < historySize; time++) {
+					NodeInfo selectedNodeInfo = MainAppFrame.nodeInfoList.get(MainAppFrame.selectedNode);
+					
+					// Set the observable properties:
+					Double totalPhysicalMemorySize = selectedNodeInfo.getDataFromHistory(time, "totalPhysicalMemorySize");
+					totalPhysicalMemorySizeProperty.set(totalPhysicalMemorySize/Math.pow(10, 9));
+					
+					Double availableProcessors = selectedNodeInfo.getDataFromHistory(time, "availableProcessors");
+					availableProcessorsProperty.set(availableProcessors.intValue());
 					
 					cpuSeries.setName("CPU Utilization");
 					memorySeries.setName("Memory Utilization");
-					Double uptime = MainAppFrame.nodeInfoList.get(MainAppFrame.selectedNode).getDataFromHistory(time, "uptime");
-					Double cpu = MainAppFrame.nodeInfoList.get(MainAppFrame.selectedNode).getDataFromHistory(time, "systemCpuLoad");
-					Double memory = MainAppFrame.nodeInfoList.get(MainAppFrame.selectedNode).getDataFromHistory(time, "memoryUtilization");
+					Double uptime = selectedNodeInfo.getDataFromHistory(time, "uptime");
+					Double cpu = selectedNodeInfo.getDataFromHistory(time, "systemCpuLoad");
+					Double memory = selectedNodeInfo.getDataFromHistory(time, "memoryUtilization");
 					cpuSeries.getData().add(
 							new XYChart.Data<Double, Double>(uptime / 1000.0, cpu*100)
 					);
@@ -215,6 +229,8 @@ public class MainAppFrame extends JFrame {
     		aNodeData.put("uptime", ""+fakeTime);
     		aNodeData.put("memoryUtilization", ""+rand.nextDouble());
     		aNodeData.put("systemCpuLoad", ""+rand.nextDouble());
+    		aNodeData.put("availableProcessors", ""+128);
+    		aNodeData.put("totalPhysicalMemorySize", ""+16.0 * Math.pow(10, 9));
     		allData .add(aNodeData);
     	}
     	return allData;
