@@ -23,7 +23,7 @@ public class NodeInfo {
 	
 	public double getCpuUtilization(){
 		try {
-			return this.getDataFromHistory(this.history.size()-1, "systemCpuLoad");
+			return (double)this.getDataFromHistory(this.history.size()-1, "systemCpuLoad");
 		} catch( Exception e) {
 			return 0.0;
 		}
@@ -31,13 +31,13 @@ public class NodeInfo {
 	
 	public double getMemoryUtilization(){
 		try {
-			return this.getDataFromHistory(this.history.size()-1, "memoryUtilization");
+			return (double)this.getDataFromHistory(this.history.size()-1, "memoryUtilization");
 		} catch( Exception e) {
 			return 0.0;
 		}
 	}
 	
-	public double getSystemLoadAverage() {
+	public Object getSystemLoadAverage() {
 		try {
 			return this.getDataFromHistory(this.history.size()-1, "systemLoadAverage");
 		} catch( Exception e) {
@@ -53,8 +53,8 @@ public class NodeInfo {
 				
 	}
 
-	public Double getDataFromHistory(int timePoint, String type) {
-		Double dataPoint = Double.valueOf((String) history.get(timePoint).get(type));
+	public Object getDataFromHistory(int timePoint, String type) {
+		Object dataPoint = history.get(timePoint).get(type);
 		return dataPoint;
 	}
 
