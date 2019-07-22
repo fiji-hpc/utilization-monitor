@@ -52,6 +52,7 @@ public class OverviewViewController {
 		// Update the cell colors according to utilization:
     	setColumnStyle(cpuUtilizationColumn);
     	setColumnStyle(memoryUtilizationColumn);
+    	//setColumnStyle(systemLoadAverageColumn);
 		
 		// Table row double-click event:
 		table.setRowFactory(tv -> {

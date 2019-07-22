@@ -67,6 +67,8 @@ public class MainAppFrame extends JFrame {
 	
 	public static ObservableList<XYChart.Series<Double, Double>> swapObservableDataSeries = FXCollections.observableArrayList();
 	
+	public static ObservableList<XYChart.Series<Double, Double>> processObservableDataSeries = FXCollections.observableArrayList();
+	
 	public static ObservableList<NodeInfo> tableData = FXCollections.observableArrayList();
 	    
     public static JFXPanel fxPanel;
@@ -201,6 +203,7 @@ public class MainAppFrame extends JFrame {
 				Series<Double, Double> cpuSeries = new Series<Double, Double>();
 				Series<Double, Double> memorySeries = new Series<Double, Double>();
 				Series<Double, Double> swapSeries = new Series<Double, Double>();
+				Series<Double, Double> processSeries = new Series<Double, Double>();
 				for(int time = 0; time < historySize; time++) {
 					NodeInfo selectedNodeInfo = MainAppFrame.nodeInfoList.get(MainAppFrame.selectedNode);
 					
@@ -232,6 +235,7 @@ public class MainAppFrame extends JFrame {
 					cpuSeries.setName("CPU Utilization");
 					memorySeries.setName("Memory Utilization");
 					swapSeries.setName("Swap Utilization");
+					processSeries.setName("Process Load");
 					Double uptime = selectedNodeInfo.getDataFromHistory(time, "uptime");
 					Double cpuUtilization = selectedNodeInfo.getDataFromHistory(time, "systemCpuLoad");
 					systemCpuLoadProperty.set(cpuUtilization*100);
@@ -248,15 +252,20 @@ public class MainAppFrame extends JFrame {
 					swapSeries.getData().add(
 							new XYChart.Data<Double, Double>(uptime / 1000.0, (totalSwapSpaceSize-freeSwapSpaceSize)/totalSwapSpaceSize*100)
 					);
+					processSeries.getData().add(
+							new XYChart.Data<Double, Double>(processCpuTime * Math.pow(10, -9), processCpuLoad*100)
+					);
 				}
 				if(cpuObservableDataSeries.size() == 0) {
 					cpuObservableDataSeries.add(cpuSeries);
 					memoryObservableDataSeries.add(memorySeries);
 					swapObservableDataSeries.add(swapSeries);
+					processObservableDataSeries.add(processSeries);
 				} else {
 					cpuObservableDataSeries.set(0, cpuSeries);
 					memoryObservableDataSeries.set(0, memorySeries);
 					swapObservableDataSeries.set(0, swapSeries);
+					processObservableDataSeries.set(0, processSeries);
 				}
 		    });
 		}, 0, 1, TimeUnit.SECONDS);
