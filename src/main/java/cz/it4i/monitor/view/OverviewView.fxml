@@ -19,6 +19,7 @@
           <TableColumn fx:id="nodeIdColumn" prefWidth="75.0" text="Node ID" />
           <TableColumn fx:id="cpuUtilizationColumn" prefWidth="75.0" text="CPU Utilization (%)" />
             <TableColumn fx:id="memoryUtilizationColumn" prefWidth="75.0" text="Memory Utilization (%)" />
+            <TableColumn fx:id="systemLoadAverageColumn" prefWidth="75.0" text="System Load Average" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

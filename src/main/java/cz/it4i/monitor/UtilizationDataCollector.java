@@ -12,7 +12,7 @@ import org.scijava.plugin.Parameter;
 import org.scijava.plugin.Plugin;
 
 @SuppressWarnings("restriction")
-@Plugin(headless = true, type = Command.class, menuPath = "Plugins>Utilities>Utilization Data Collector", visible = false)
+@Plugin(headless = true, type = Command.class, menuPath = "Plugins>Utilities>Utilization Data Collector", visible = true)
 public class UtilizationDataCollector implements Command {
 
 	// CPU utilization metrics:
@@ -21,25 +21,39 @@ public class UtilizationDataCollector implements Command {
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private double processCpuLoad;
+	
+	@Parameter(type = ItemIO.OUTPUT)
+	private long processCpuTime;
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private double systemCpuLoad;
 
 	@Parameter(type = ItemIO.OUTPUT)
 	private double systemLoadAverage;
+	
+	@Parameter(type = ItemIO.OUTPUT)
+	private int availableProcessors;
 
 	// Memory utilization metrics:
 	@Parameter(type = ItemIO.OUTPUT)
-	private double totalPhysicalMemorySize;
+	private long totalPhysicalMemorySize;
 
 	@Parameter(type = ItemIO.OUTPUT)
-	private double freePhysicalMemorySize;
+	private long freePhysicalMemorySize;
 	
 	@Parameter(type = ItemIO.OUTPUT)
 	private double memoryUtilization;
 	
 	@Parameter(type = ItemIO.OUTPUT)
-	private long availableProcessors;
+	private long committedVirtualMemorySize;
+	
+	@Parameter(type = ItemIO.OUTPUT)
+	private long totalSwapSpaceSize;
+	
+	@Parameter(type = ItemIO.OUTPUT)
+	private long freeSwapSpaceSize;
+	
+
 	
 	@Override
 	public void run() {		
@@ -57,6 +71,8 @@ public class UtilizationDataCollector implements Command {
 		
 		availableProcessors = osBean.getAvailableProcessors();
 		
+		processCpuTime = osBean.getProcessCpuTime();
+		
 		// The bellow functionality is not supported on Windows, it always outputs "-1":
 		systemLoadAverage = osBean.getSystemLoadAverage();
 		
@@ -70,6 +86,12 @@ public class UtilizationDataCollector implements Command {
 		
 		// Calculate the utilization (in [0.0,1.0] interval):
 		memoryUtilization = usedPhysicalMemory/totalPhysicalMemorySize;
+		
+		committedVirtualMemorySize = osBean.getCommittedVirtualMemorySize();
+		
+		totalSwapSpaceSize = osBean.getTotalSwapSpaceSize();
+		
+		freeSwapSpaceSize = osBean.getFreeSwapSpaceSize();
 	}
 
 }

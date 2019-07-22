@@ -36,6 +36,14 @@ public class NodeInfo {
 			return 0.0;
 		}
 	}
+	
+	public double getSystemLoadAverage() {
+		try {
+			return this.getDataFromHistory(this.history.size()-1, "systemLoadAverage");
+		} catch( Exception e) {
+			return 0.0;
+		}
+	}
 
 	public void addToHistory(Map<String, Object> dataPoint) {
 		history.add(dataPoint);

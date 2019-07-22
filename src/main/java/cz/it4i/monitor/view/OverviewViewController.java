@@ -26,6 +26,9 @@ public class OverviewViewController {
     
     @FXML
     private TableColumn<NodeInfo, Double> memoryUtilizationColumn;
+    
+    @FXML
+    private TableColumn<NodeInfo, Double> systemLoadAverageColumn;
 
     private DecimalFormat format = new DecimalFormat("0.00");
     
@@ -43,6 +46,8 @@ public class OverviewViewController {
     	this.cpuUtilizationColumn.setCellValueFactory(new PropertyValueFactory<>("cpuUtilization"));
     	
     	this.memoryUtilizationColumn.setCellValueFactory(new PropertyValueFactory<>("memoryUtilization"));
+    	
+    	this.systemLoadAverageColumn.setCellValueFactory(new PropertyValueFactory<>("systemLoadAverage"));
     			
 		// Update the cell colors according to utilization:
     	setColumnStyle(cpuUtilizationColumn);
@@ -95,7 +100,7 @@ public class OverviewViewController {
 		});
     }
 
-    // Helper function that sets the appropriate color according to the utilization level:
+    // Helper method that sets the appropriate color according to the utilization level:
 	private String cellColor(Double item) {
 		String[] colors = {
 				"#04f700", 
