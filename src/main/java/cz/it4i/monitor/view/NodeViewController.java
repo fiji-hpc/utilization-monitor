@@ -83,6 +83,8 @@ public class NodeViewController {
     private NumberAxis yAxisProcessLoad;
     
     private MainAppFrame mainAppFrame;
+    
+    private final String format = "%.2f";
   
     public NodeViewController() {
     	this.xAxisCpuUtilization = new NumberAxis();
@@ -95,17 +97,17 @@ public class NodeViewController {
     private void initialize() {
     	nodeLabel.textProperty().bind(MainAppFrame.selectedNodeProperty.asString());
     	
-    	totalPhysicalMemorySizeLabel.textProperty().bind(MainAppFrame.totalPhysicalMemorySizeProperty.asString());
+    	totalPhysicalMemorySizeLabel.textProperty().bind(MainAppFrame.totalPhysicalMemorySizeProperty.asString(format));
     	availableProcessorsLabel.textProperty().bind(MainAppFrame.availableProcessorsProperty.asString());
-    	systemCpuLoadLabel.textProperty().bind(MainAppFrame.systemCpuLoadProperty.asString());
-    	memoryUtilizationLabel.textProperty().bind(MainAppFrame.memoryUtilizationProperty.asString());
-    	freePhysicalMemorySizeLabel.textProperty().bind(MainAppFrame.freePhysicalMemorySizeProperty.asString());
-    	committedVirtualMemorySizeLabel.textProperty().bind(MainAppFrame.committedVirtualMemorySizeProperty.asString());
-    	totalSwapSpaceSizeLabel.textProperty().bind(MainAppFrame.totalSwapSpaceSizeProperty.asString());
-    	freeSwapSpaceSizeLabel.textProperty().bind(MainAppFrame.freeSwapSpaceSizeProperty.asString());
-    	processCpuLoadLabel.textProperty().bind(MainAppFrame.processCpuLoadProperty.asString());
-    	processCpuTimeLabel.textProperty().bind(MainAppFrame.processCpuTimeProperty.asString());
-    	systemLoadAverageLabel.textProperty().bind(MainAppFrame.systemLoadAverageProperty.asString());
+    	systemCpuLoadLabel.textProperty().bind(MainAppFrame.systemCpuLoadProperty.asString(format));
+    	memoryUtilizationLabel.textProperty().bind(MainAppFrame.memoryUtilizationProperty.asString(format));
+    	freePhysicalMemorySizeLabel.textProperty().bind(MainAppFrame.freePhysicalMemorySizeProperty.asString(format));
+    	committedVirtualMemorySizeLabel.textProperty().bind(MainAppFrame.committedVirtualMemorySizeProperty.asString(format));
+    	totalSwapSpaceSizeLabel.textProperty().bind(MainAppFrame.totalSwapSpaceSizeProperty.asString(format));
+    	freeSwapSpaceSizeLabel.textProperty().bind(MainAppFrame.freeSwapSpaceSizeProperty.asString(format));
+    	processCpuLoadLabel.textProperty().bind(MainAppFrame.processCpuLoadProperty.asString(format));
+    	processCpuTimeLabel.textProperty().bind(MainAppFrame.processCpuTimeProperty.asString(format));
+    	systemLoadAverageLabel.textProperty().bind(MainAppFrame.systemLoadAverageProperty.asString(format));
     	
     	setupAxis(xAxisCpuUtilization, yAxisCpuUtilization, "CPU utilization (%) ");
     	setupAxis(xAxisMemoryUtilization, yAxisMemoryUtilization, "Memory utilization (%) ");
