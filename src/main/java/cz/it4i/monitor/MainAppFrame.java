@@ -65,6 +65,8 @@ public class MainAppFrame extends JFrame {
 	
 	public static ObservableList<XYChart.Series<Double, Double>> memoryObservableDataSeries = FXCollections.observableArrayList();
 	
+	public static ObservableList<XYChart.Series<Double, Double>> swapObservableDataSeries = FXCollections.observableArrayList();
+	
 	public static ObservableList<NodeInfo> tableData = FXCollections.observableArrayList();
 	    
     public static JFXPanel fxPanel;
@@ -198,6 +200,7 @@ public class MainAppFrame extends JFrame {
 				int historySize = MainAppFrame.nodeInfoList.get(selectedNode).getNumberOfItemsInHistory();
 				Series<Double, Double> cpuSeries = new Series<Double, Double>();
 				Series<Double, Double> memorySeries = new Series<Double, Double>();
+				Series<Double, Double> swapSeries = new Series<Double, Double>();
 				for(int time = 0; time < historySize; time++) {
 					NodeInfo selectedNodeInfo = MainAppFrame.nodeInfoList.get(MainAppFrame.selectedNode);
 					
@@ -228,6 +231,7 @@ public class MainAppFrame extends JFrame {
 					
 					cpuSeries.setName("CPU Utilization");
 					memorySeries.setName("Memory Utilization");
+					swapSeries.setName("Swap Utilization");
 					Double uptime = selectedNodeInfo.getDataFromHistory(time, "uptime");
 					Double cpuUtilization = selectedNodeInfo.getDataFromHistory(time, "systemCpuLoad");
 					systemCpuLoadProperty.set(cpuUtilization*100);
@@ -241,13 +245,18 @@ public class MainAppFrame extends JFrame {
 					memorySeries.getData().add(
 							new XYChart.Data<Double, Double>(uptime / 1000.0, memoryUtilization*100)
 					);
+					swapSeries.getData().add(
+							new XYChart.Data<Double, Double>(uptime / 1000.0, (totalSwapSpaceSize-freeSwapSpaceSize)/totalSwapSpaceSize*100)
+					);
 				}
 				if(cpuObservableDataSeries.size() == 0) {
 					cpuObservableDataSeries.add(cpuSeries);
 					memoryObservableDataSeries.add(memorySeries);
+					swapObservableDataSeries.add(swapSeries);
 				} else {
 					cpuObservableDataSeries.set(0, cpuSeries);
 					memoryObservableDataSeries.set(0, memorySeries);
+					swapObservableDataSeries.set(0, swapSeries);
 				}
 		    });
 		}, 0, 1, TimeUnit.SECONDS);

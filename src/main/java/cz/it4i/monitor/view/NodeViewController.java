@@ -53,6 +53,9 @@ public class NodeViewController {
     private LineChart<Double, Double> memoryUtilizationLineChart;
     
     @FXML
+    private LineChart<Double, Double> swapUtilizationLineChart;
+    
+    @FXML
     private NumberAxis xAxisCpuUtilization;
     
     @FXML
@@ -63,6 +66,12 @@ public class NodeViewController {
     
     @FXML
     private NumberAxis yAxisMemoryUtilization;
+    
+    @FXML
+    private NumberAxis xAxisSwapUtilization;
+    
+    @FXML
+    private NumberAxis yAxisSwapUtilization;
     
     private MainAppFrame mainAppFrame;
   
@@ -91,15 +100,19 @@ public class NodeViewController {
     	
     	setupAxis(xAxisCpuUtilization, yAxisCpuUtilization, "CPU utilization (%) ");
     	setupAxis(xAxisMemoryUtilization, yAxisMemoryUtilization, "Memory utilization (%) ");
+    	setupAxis(xAxisSwapUtilization, yAxisSwapUtilization, "Swap utilization (%)");
     	
     	cpuUtilizationLineChart.setTitle("CPU utilization (%) over uptime (s).");
     	memoryUtilizationLineChart.setTitle("Memory utilization (%) over uptime (s).");
+    	swapUtilizationLineChart.setTitle("Swap utilization (%) over uptime (s).");
     	
     	cpuUtilizationLineChart.setStyle("CHART_COLOR_1: LightSkyBlue ;");
     	memoryUtilizationLineChart.setStyle("CHART_COLOR_1: SlateBlue ;");
+    	swapUtilizationLineChart.setStyle("CHART_COLOR_1:Green;");
     	
     	cpuUtilizationLineChart.setData(MainAppFrame.cpuObservableDataSeries);
     	memoryUtilizationLineChart.setData(MainAppFrame.memoryObservableDataSeries);
+    	swapUtilizationLineChart.setData(MainAppFrame.swapObservableDataSeries);
     }
 
     @FXML
