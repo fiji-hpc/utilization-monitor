@@ -151,7 +151,7 @@ public class MainAppFrame extends JFrame {
     	nodeScene = new Scene(nodeFxml);
     	
 		this.fxPanel.setScene(overviewScene);
-		this.setSize(800, 800);
+		this.setSize(500, 800);
 		this.fxPanel.setVisible(true);
     }
     
