@@ -21,6 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
 import javax.swing.JFrame;
 import net.imagej.ImageJ;
@@ -92,7 +93,7 @@ public class MainAppFrame extends JFrame {
     
     private GridPane overviewFxml;
     
-    private GridPane nodeFxml; 
+    private TabPane nodeFxml; 
 	
     @Parameter
     private LogService log;
@@ -140,7 +141,7 @@ public class MainAppFrame extends JFrame {
 	        // Load the node scene:
 	        FXMLLoader newLoader = new FXMLLoader();
 	        newLoader.setLocation(MainAppFrame.class.getResource("view/NodeView.fxml"));
-			nodeFxml = (GridPane) newLoader.load();
+			nodeFxml = (TabPane) newLoader.load();
 			NodeViewController nodeViewController = newLoader.getController();
 			nodeViewController.setMainApp(this);
 		} catch (IOException e) {
