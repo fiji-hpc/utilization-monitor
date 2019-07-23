@@ -59,6 +59,9 @@ public class NodeViewController {
     private LineChart<Double, Double> processLoadLineChart;
     
     @FXML
+    private LineChart<Double, Double> averageLoadLineChart;
+    
+    @FXML
     private NumberAxis xAxisCpuUtilization;
     
     @FXML
@@ -81,6 +84,12 @@ public class NodeViewController {
     
     @FXML
     private NumberAxis yAxisProcessLoad;
+    
+    @FXML
+    private NumberAxis xAxisAverageLoad;
+    
+    @FXML
+    private NumberAxis yAxisAverageLoad;
     
     private MainAppFrame mainAppFrame;
     
@@ -109,25 +118,29 @@ public class NodeViewController {
     	processCpuTimeLabel.textProperty().bind(MainAppFrame.processCpuTimeProperty.asString(format));
     	systemLoadAverageLabel.textProperty().bind(MainAppFrame.systemLoadAverageProperty.asString(format));
     	
-    	setupAxis(xAxisCpuUtilization, yAxisCpuUtilization, "CPU utilization (%) ");
-    	setupAxis(xAxisMemoryUtilization, yAxisMemoryUtilization, "Memory utilization (%) ");
-    	setupAxis(xAxisSwapUtilization, yAxisSwapUtilization, "Swap utilization (%)");
-    	setupAxis(xAxisProcessLoad, yAxisProcessLoad, "Process Load (%)");
+    	setupAxis(xAxisCpuUtilization, yAxisCpuUtilization, "CPU utilization (%) ", false);
+    	setupAxis(xAxisMemoryUtilization, yAxisMemoryUtilization, "Memory utilization (%) ", false);
+    	setupAxis(xAxisSwapUtilization, yAxisSwapUtilization, "Swap utilization (%)", false);
+    	setupAxis(xAxisProcessLoad, yAxisProcessLoad, "Process Load (%)", false);
+    	setupAxis(xAxisAverageLoad, yAxisAverageLoad, "System Average Load (%)", true);
     	
     	cpuUtilizationLineChart.setTitle("CPU utilization (%) over uptime (s).");
     	memoryUtilizationLineChart.setTitle("Memory utilization (%) over uptime (s).");
     	swapUtilizationLineChart.setTitle("Swap utilization (%) over uptime (s).");
     	processLoadLineChart.setTitle("Process load (%) over process time (s).");
+    	averageLoadLineChart.setTitle("System Average Load (%) over uptime (s).");
     	
     	cpuUtilizationLineChart.setStyle("CHART_COLOR_1: LightSkyBlue ;");
     	memoryUtilizationLineChart.setStyle("CHART_COLOR_1: SlateBlue ;");
     	swapUtilizationLineChart.setStyle("CHART_COLOR_1: Green ;");
     	processLoadLineChart.setStyle("CHART_COLOR_1: Gold ;");
+    	averageLoadLineChart.setStyle("CHART_COLOR_1: Violet ;");
     	
     	cpuUtilizationLineChart.setData(MainAppFrame.cpuObservableDataSeries);
     	memoryUtilizationLineChart.setData(MainAppFrame.memoryObservableDataSeries);
     	swapUtilizationLineChart.setData(MainAppFrame.swapObservableDataSeries);
     	processLoadLineChart.setData(MainAppFrame.processObservableDataSeries);
+    	averageLoadLineChart.setData(MainAppFrame.averageObservableDataSeries);
     }
 
     @FXML
@@ -139,13 +152,13 @@ public class NodeViewController {
         this.mainAppFrame = mainAppFrame;
     }
     
-    private void setupAxis(NumberAxis xAxis, NumberAxis yAxis, String name) {
+    private void setupAxis(NumberAxis xAxis, NumberAxis yAxis, String name, boolean isAutoRanging) {
     	xAxis.setForceZeroInRange(false);
     	xAxis.setLabel("uptime (s)");    	
     	xAxis.setForceZeroInRange(false);
     	
     	yAxis.setLabel(name);
-		yAxis.setAutoRanging(false);
+		yAxis.setAutoRanging(isAutoRanging);
 		yAxis.setLowerBound(0);
 		yAxis.setUpperBound(100);
 		yAxis.setTickUnit(10);

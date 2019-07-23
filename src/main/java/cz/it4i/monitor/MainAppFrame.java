@@ -70,6 +70,8 @@ public class MainAppFrame extends JFrame {
 	
 	public static ObservableList<XYChart.Series<Double, Double>> processObservableDataSeries = FXCollections.observableArrayList();
 	
+	public static ObservableList<XYChart.Series<Double, Double>> averageObservableDataSeries = FXCollections.observableArrayList();
+	
 	public static ObservableList<NodeInfo> tableData = FXCollections.observableArrayList();
 	    
     public static JFXPanel fxPanel;
@@ -217,6 +219,7 @@ public class MainAppFrame extends JFrame {
 		Series<Double, Double> memorySeries = new Series<Double, Double>();
 		Series<Double, Double> swapSeries = new Series<Double, Double>();
 		Series<Double, Double> processSeries = new Series<Double, Double>();
+		Series<Double, Double> averageSeries = new Series<Double, Double>();
 		for(int time = 0; time < historySize; time++) {
 			NodeInfo selectedNodeInfo = MainAppFrame.nodeInfoList.get(MainAppFrame.selectedNode);
 			
@@ -249,6 +252,7 @@ public class MainAppFrame extends JFrame {
 			memorySeries.setName("Memory Utilization");
 			swapSeries.setName("Swap Utilization");
 			processSeries.setName("Process Load");
+			averageSeries.setName("System Load Average");
 			Long uptime = (Long)selectedNodeInfo.getDataFromHistory(time, "uptime");
 			Double cpuUtilization = (Double)selectedNodeInfo.getDataFromHistory(time, "systemCpuLoad");
 			systemCpuLoadProperty.set(cpuUtilization*100);
@@ -268,17 +272,22 @@ public class MainAppFrame extends JFrame {
 			processSeries.getData().add(
 					new XYChart.Data<Double, Double>(processCpuTime * Math.pow(10, -9), processCpuLoad*100)
 			);
+			averageSeries.getData().add(
+					new XYChart.Data<Double, Double>(uptime/1000.0, systemLoadAverage*100) 
+			);
 		}
 		if(cpuObservableDataSeries.size() == 0) {
 			cpuObservableDataSeries.add(cpuSeries);
 			memoryObservableDataSeries.add(memorySeries);
 			swapObservableDataSeries.add(swapSeries);
 			processObservableDataSeries.add(processSeries);
+			averageObservableDataSeries.add(averageSeries);
 		} else {
 			cpuObservableDataSeries.set(0, cpuSeries);
 			memoryObservableDataSeries.set(0, memorySeries);
 			swapObservableDataSeries.set(0, swapSeries);
 			processObservableDataSeries.set(0, processSeries);
+			averageObservableDataSeries.set(0, averageSeries);
 		}
 	}
 
