@@ -52,7 +52,7 @@ public class OverviewViewController {
 		// Update the cell colors according to utilization:
     	setColumnStyle(cpuUtilizationColumn);
     	setColumnStyle(memoryUtilizationColumn);
-    	//setColumnStyle(systemLoadAverageColumn);
+    	setAverageLoadColumnStyle(systemLoadAverageColumn);
 		
 		// Table row double-click event:
 		table.setRowFactory(tv -> {
@@ -64,6 +64,8 @@ public class OverviewViewController {
 		            NodeInfo clickedRow = row.getItem();
 		            MainAppFrame.selectedNode = clickedRow.getNodeId();
 		            MainAppFrame.selectedNodeProperty.set(MainAppFrame.selectedNode);		             		       
+		            
+		            MainAppFrame.updateObservables();
 		            
 		            MainAppFrame.fxPanel.setScene(MainAppFrame.nodeScene);
 		        }
@@ -95,6 +97,32 @@ public class OverviewViewController {
 						setText(format.format(item*100));
 						setTextFill(Paint.valueOf("black"));
 						setStyle("-fx-background-color:"+cellColor(item)+";");
+					}
+				}
+			};
+		});
+    }
+    
+    // Update the cell colors according to utilization and set the double formating,
+    // numeric value can be greater than one:
+    private void setAverageLoadColumnStyle(TableColumn<NodeInfo, Double> column) {
+    	column.setCellFactory(cell -> {
+			return new TableCell<NodeInfo, Double>(){
+				@Override
+				protected void updateItem(Double item, boolean empty) {
+					super.updateItem(item, empty);
+					
+					if(item == null || empty) {
+						setText(null);
+						setStyle("");
+					} else {
+						setText(format.format(item));
+						setTextFill(Paint.valueOf("black"));
+						String color = "#ad60bd";
+						if(item <= MainAppFrame.numberOfNodes) {
+							color = cellColor(item/MainAppFrame.numberOfNodes);							
+						}
+						setStyle("-fx-background-color: "+color+" ;");						
 					}
 				}
 			};

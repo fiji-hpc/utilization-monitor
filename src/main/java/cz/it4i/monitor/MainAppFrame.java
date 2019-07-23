@@ -82,6 +82,8 @@ public class MainAppFrame extends JFrame {
     
     public static Scene overviewScene;
     
+    private static ScheduledExecutorService scheduledExecutorService;
+    
     private static List<NodeInfo> nodeInfoList = new ArrayList<NodeInfo>();	    
 
     private static long fakeTime = 0;
@@ -93,7 +95,7 @@ public class MainAppFrame extends JFrame {
     
     private GridPane overviewFxml;
     
-    private TabPane nodeFxml; 
+    private GridPane nodeFxml; 
 	
     @Parameter
     private LogService log;
@@ -124,6 +126,13 @@ public class MainAppFrame extends JFrame {
                 initFX(fxPanel);
             }
         });
+        
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+               scheduledExecutorService.shutdownNow();
+            }
+        });
     }
 
     public void initFX(JFXPanel fxPanel) {
@@ -141,7 +150,7 @@ public class MainAppFrame extends JFrame {
 	        // Load the node scene:
 	        FXMLLoader newLoader = new FXMLLoader();
 	        newLoader.setLocation(MainAppFrame.class.getResource("view/NodeView.fxml"));
-			nodeFxml = (TabPane) newLoader.load();
+			nodeFxml = (GridPane) newLoader.load();
 			NodeViewController nodeViewController = newLoader.getController();
 			nodeViewController.setMainApp(this);
 		} catch (IOException e) {
@@ -151,7 +160,7 @@ public class MainAppFrame extends JFrame {
     	nodeScene = new Scene(nodeFxml);
     	
 		this.fxPanel.setScene(overviewScene);
-		this.setSize(500, 800);
+		this.setSize(600, 800);
 		this.fxPanel.setVisible(true);
     }
     
@@ -160,7 +169,7 @@ public class MainAppFrame extends JFrame {
     	
     	allData = MainAppFrame.fakeRunAll();
     	
-    	System.out.println(allData.toString());
+    	//System.out.println(allData.toString());
     	
     	// Count the number of nodes from the first response:
     	if(firstTime) {
@@ -187,96 +196,97 @@ public class MainAppFrame extends JFrame {
     	return allData;		
 	}
 
-    private void getDataEverySecond() {			
-		
-    	ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+    private void getDataEverySecond() {		
+    	scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 		scheduledExecutorService.scheduleAtFixedRate(() -> {
-			Platform.runLater(() -> {
-				MainAppFrame.runMonitor();
-				
-				// Update the table row data: 
-				for(int index = 0; index < MainAppFrame.tableData.size(); index++) {
-		        	MainAppFrame.tableData.set(index, MainAppFrame.nodeInfoList.get(index));
-		        }
-				
-				// Update the data series in the charts periodically:
-				int historySize = MainAppFrame.nodeInfoList.get(selectedNode).getNumberOfItemsInHistory();
-				Series<Double, Double> cpuSeries = new Series<Double, Double>();
-				Series<Double, Double> memorySeries = new Series<Double, Double>();
-				Series<Double, Double> swapSeries = new Series<Double, Double>();
-				Series<Double, Double> processSeries = new Series<Double, Double>();
-				for(int time = 0; time < historySize; time++) {
-					NodeInfo selectedNodeInfo = MainAppFrame.nodeInfoList.get(MainAppFrame.selectedNode);
-					
-					// Set the observable properties:
-					Double totalPhysicalMemorySize = (Double)selectedNodeInfo.getDataFromHistory(time, "totalPhysicalMemorySize");
-					totalPhysicalMemorySizeProperty.set(totalPhysicalMemorySize/Math.pow(10, 9));
-					
-					Integer availableProcessors = (Integer)selectedNodeInfo.getDataFromHistory(time, "availableProcessors");
-					availableProcessorsProperty.set(availableProcessors.intValue());
-					
-					Long totalSwapSpaceSize = (Long)selectedNodeInfo.getDataFromHistory(time, "totalSwapSpaceSize");
-					totalSwapSpaceSizeProperty.set(totalSwapSpaceSize/Math.pow(10, 9));
-					
-					Long freeSwapSpaceSize = (Long)selectedNodeInfo.getDataFromHistory(time, "freeSwapSpaceSize");
-					freeSwapSpaceSizeProperty.set(freeSwapSpaceSize/Math.pow(10, 9));
-					
-					Long committedVirtualMemorySize = (Long)selectedNodeInfo.getDataFromHistory(time, "committedVirtualMemorySize");
-					committedVirtualMemorySizeProperty.set(committedVirtualMemorySize/Math.pow(10, 9));
-					
-					Double processCpuLoad = (Double)selectedNodeInfo.getDataFromHistory(time, "processCpuLoad");
-					processCpuLoadProperty.set(processCpuLoad*100);
-					
-					Double processCpuTime = (Double)selectedNodeInfo.getDataFromHistory(time, "processCpuTime");
-					processCpuTimeProperty.set(processCpuTime*Math.pow(10, -9));
-					
-					Double systemLoadAverage = (Double)selectedNodeInfo.getDataFromHistory(time, "systemLoadAverage");
-					systemLoadAverageProperty.set(systemLoadAverage);
-					
-					cpuSeries.setName("CPU Utilization");
-					memorySeries.setName("Memory Utilization");
-					swapSeries.setName("Swap Utilization");
-					processSeries.setName("Process Load");
-					Long uptime = (Long)selectedNodeInfo.getDataFromHistory(time, "uptime");
-					Double cpuUtilization = (Double)selectedNodeInfo.getDataFromHistory(time, "systemCpuLoad");
-					systemCpuLoadProperty.set(cpuUtilization*100);
-					Double memoryUtilization = (Double)selectedNodeInfo.getDataFromHistory(time, "memoryUtilization");
-					memoryUtilizationProperty.set(memoryUtilization*100);
-					freePhysicalMemorySizeProperty.set(totalPhysicalMemorySize/Math.pow(10, 9) * memoryUtilization);
-					
-					cpuSeries.getData().add(
-							new XYChart.Data<Double, Double>(uptime / 1000.0, cpuUtilization*100)
-					);
-					memorySeries.getData().add(
-							new XYChart.Data<Double, Double>(uptime / 1000.0, memoryUtilization*100)
-					);
-					swapSeries.getData().add(
-							new XYChart.Data<Double, Double>(uptime / 1000.0, (double) ((totalSwapSpaceSize-freeSwapSpaceSize)/(double)totalSwapSpaceSize*100))
-					);
-					processSeries.getData().add(
-							new XYChart.Data<Double, Double>(processCpuTime * Math.pow(10, -9), processCpuLoad*100)
-					);
-				}
-				if(cpuObservableDataSeries.size() == 0) {
-					cpuObservableDataSeries.add(cpuSeries);
-					memoryObservableDataSeries.add(memorySeries);
-					swapObservableDataSeries.add(swapSeries);
-					processObservableDataSeries.add(processSeries);
-				} else {
-					cpuObservableDataSeries.set(0, cpuSeries);
-					memoryObservableDataSeries.set(0, memorySeries);
-					swapObservableDataSeries.set(0, swapSeries);
-					processObservableDataSeries.set(0, processSeries);
-				}
-		    });
+			Platform.runLater(() -> updateObservables());
 		}, 0, 1, TimeUnit.SECONDS);
     }
 
-    // Fake runAll function that returns mockup data:
+    public static void updateObservables() {
+		MainAppFrame.runMonitor();
+		
+		// Update the table row data: 
+		for(int index = 0; index < MainAppFrame.tableData.size(); index++) {
+        	MainAppFrame.tableData.set(index, MainAppFrame.nodeInfoList.get(index));
+        }
+		
+		// Update the data series in the charts periodically:
+		int historySize = MainAppFrame.nodeInfoList.get(selectedNode).getNumberOfItemsInHistory();
+		Series<Double, Double> cpuSeries = new Series<Double, Double>();
+		Series<Double, Double> memorySeries = new Series<Double, Double>();
+		Series<Double, Double> swapSeries = new Series<Double, Double>();
+		Series<Double, Double> processSeries = new Series<Double, Double>();
+		for(int time = 0; time < historySize; time++) {
+			NodeInfo selectedNodeInfo = MainAppFrame.nodeInfoList.get(MainAppFrame.selectedNode);
+			
+			// Set the observable properties:
+			Double totalPhysicalMemorySize = (Double)selectedNodeInfo.getDataFromHistory(time, "totalPhysicalMemorySize");
+			totalPhysicalMemorySizeProperty.set(totalPhysicalMemorySize/Math.pow(10, 9));
+			
+			Integer availableProcessors = (Integer)selectedNodeInfo.getDataFromHistory(time, "availableProcessors");
+			availableProcessorsProperty.set(availableProcessors.intValue());
+			
+			Long totalSwapSpaceSize = (Long)selectedNodeInfo.getDataFromHistory(time, "totalSwapSpaceSize");
+			totalSwapSpaceSizeProperty.set(totalSwapSpaceSize/Math.pow(10, 9));
+			
+			Long freeSwapSpaceSize = (Long)selectedNodeInfo.getDataFromHistory(time, "freeSwapSpaceSize");
+			freeSwapSpaceSizeProperty.set(freeSwapSpaceSize/Math.pow(10, 9));
+			
+			Long committedVirtualMemorySize = (Long)selectedNodeInfo.getDataFromHistory(time, "committedVirtualMemorySize");
+			committedVirtualMemorySizeProperty.set(committedVirtualMemorySize/Math.pow(10, 9));
+			
+			Double processCpuLoad = (Double)selectedNodeInfo.getDataFromHistory(time, "processCpuLoad");
+			processCpuLoadProperty.set(processCpuLoad*100);
+			
+			Double processCpuTime = (Double)selectedNodeInfo.getDataFromHistory(time, "processCpuTime");
+			processCpuTimeProperty.set(processCpuTime*Math.pow(10, -9));
+			
+			Double systemLoadAverage = (Double)selectedNodeInfo.getDataFromHistory(time, "systemLoadAverage");
+			systemLoadAverageProperty.set(systemLoadAverage);
+			
+			cpuSeries.setName("CPU Utilization");
+			memorySeries.setName("Memory Utilization");
+			swapSeries.setName("Swap Utilization");
+			processSeries.setName("Process Load");
+			Long uptime = (Long)selectedNodeInfo.getDataFromHistory(time, "uptime");
+			Double cpuUtilization = (Double)selectedNodeInfo.getDataFromHistory(time, "systemCpuLoad");
+			systemCpuLoadProperty.set(cpuUtilization*100);
+			Double memoryUtilization = (Double)selectedNodeInfo.getDataFromHistory(time, "memoryUtilization");
+			memoryUtilizationProperty.set(memoryUtilization*100);
+			freePhysicalMemorySizeProperty.set(totalPhysicalMemorySize/Math.pow(10, 9) * memoryUtilization);
+			
+			cpuSeries.getData().add(
+					new XYChart.Data<Double, Double>(uptime / 1000.0, cpuUtilization*100)
+			);
+			memorySeries.getData().add(
+					new XYChart.Data<Double, Double>(uptime / 1000.0, memoryUtilization*100)
+			);
+			swapSeries.getData().add(
+					new XYChart.Data<Double, Double>(uptime / 1000.0, (double) ((totalSwapSpaceSize-freeSwapSpaceSize)/(double)totalSwapSpaceSize*100))
+			);
+			processSeries.getData().add(
+					new XYChart.Data<Double, Double>(processCpuTime * Math.pow(10, -9), processCpuLoad*100)
+			);
+		}
+		if(cpuObservableDataSeries.size() == 0) {
+			cpuObservableDataSeries.add(cpuSeries);
+			memoryObservableDataSeries.add(memorySeries);
+			swapObservableDataSeries.add(swapSeries);
+			processObservableDataSeries.add(processSeries);
+		} else {
+			cpuObservableDataSeries.set(0, cpuSeries);
+			memoryObservableDataSeries.set(0, memorySeries);
+			swapObservableDataSeries.set(0, swapSeries);
+			processObservableDataSeries.set(0, processSeries);
+		}
+	}
+
+	// Fake runAll function that returns mockup data:
     private static List<Map<String, Object>> fakeRunAll() {
     	Random rand = new Random();
     	fakeTime += 1000;
-    	int fakeNumberOfNodes = 5;
+    	int fakeNumberOfNodes = 20;
     	List<Map<String, Object>> allData = new LinkedList<>();
 		for(int index = 0; index < fakeNumberOfNodes; index++) {
     		Map<String, Object> aNodeData = new HashMap<String, Object>();
@@ -290,10 +300,9 @@ public class MainAppFrame extends JFrame {
     		aNodeData.put("freeSwapSpaceSize", 5837094912L);
     		aNodeData.put("processCpuLoad", rand.nextDouble());
     		aNodeData.put("processCpuTime", fakeTime*Math.pow(10, 6));
-    		aNodeData.put("systemLoadAverage", rand.nextDouble()*fakeNumberOfNodes);
+    		aNodeData.put("systemLoadAverage", rand.nextDouble()*(fakeNumberOfNodes+1));
     		allData .add(aNodeData);
     	}
     	return allData;
     }
-    
 }
