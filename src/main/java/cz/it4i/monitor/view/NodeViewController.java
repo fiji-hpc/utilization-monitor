@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 
 import java.text.DecimalFormat;
 
@@ -80,6 +81,9 @@ public class NodeViewController {
     private LineChart<Double, Double> averageLoadLineChart;
     
     @FXML
+    private ListView classPathListView;
+    
+    @FXML
     private NumberAxis xAxisCpuUtilization;
     
     @FXML
@@ -114,10 +118,6 @@ public class NodeViewController {
     private final String format = "%.2f";
   
     public NodeViewController() {
-    	this.xAxisCpuUtilization = new NumberAxis();
-    	this.yAxisCpuUtilization = new NumberAxis();
-    	this.xAxisMemoryUtilization = new NumberAxis();
-    	this.yAxisMemoryUtilization = new NumberAxis();
     }
 
     @FXML
@@ -142,7 +142,8 @@ public class NodeViewController {
     	vmNameLabel.textProperty().bind(MainAppFrame.vmNameProperty);
     	vmVersionLabel.textProperty().bind(MainAppFrame.vmVersionProperty);
     	
-    	
+    	classPathListView.setItems(MainAppFrame.classPathObservableList);
+    	    	
     	setupAxis(xAxisCpuUtilization, yAxisCpuUtilization, "CPU utilization (%) ", false);
     	setupAxis(xAxisMemoryUtilization, yAxisMemoryUtilization, "Memory utilization (%) ", false);
     	setupAxis(xAxisSwapUtilization, yAxisSwapUtilization, "Swap utilization (%)", false);

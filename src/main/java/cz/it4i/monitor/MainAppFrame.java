@@ -3,6 +3,7 @@ package cz.it4i.monitor;
 import java.awt.Dimension;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -74,6 +75,8 @@ public class MainAppFrame extends JFrame {
 	public static SimpleStringProperty vmVendorProperty = new SimpleStringProperty(MainAppFrame.class, "vmVendorProperty");
 	
 	public static SimpleStringProperty vmVersionProperty = new SimpleStringProperty(MainAppFrame.class, "vmVersionProperty");
+	
+	public static ObservableList<String> classPathObservableList = FXCollections.observableArrayList();
 	
 	public static ObservableList<XYChart.Series<Double, Double>> cpuObservableDataSeries = FXCollections.observableArrayList();
 	
@@ -284,6 +287,19 @@ public class MainAppFrame extends JFrame {
 			String vmVersion = (String)selectedNodeInfo.getDataFromHistory(time, "vmVersion");
 			vmVersionProperty.set(vmVersion);
 			
+			String classPath = (String)selectedNodeInfo.getDataFromHistory(time, "classPath");
+			List<String> tempClassPathList = Arrays.asList(classPath.split("\\s*;\\s*"));
+			for(int index = 0; index < tempClassPathList.size(); index++) {
+				String aPath = tempClassPathList.get(index);
+				if(index < classPathObservableList.size()) {
+					classPathObservableList.set(index, aPath);
+				} else
+				{
+					classPathObservableList.add(aPath);
+				}
+					
+			}
+			
 			cpuSeries.setName("CPU Utilization");
 			memorySeries.setName("Memory Utilization");
 			swapSeries.setName("Swap Utilization");
@@ -351,7 +367,8 @@ public class MainAppFrame extends JFrame {
     		aNodeData.put("version", "3.10.0-957.12.2.el7.x86_64");
     		aNodeData.put("vmVendor", "Fake Corporation");
     		aNodeData.put("vmName", "Fake Virtual Machine 64bit");
-    		aNodeData.put("vmVersion","fake-1.0");    		
+    		aNodeData.put("vmVersion","fake-1.0");
+    		aNodeData.put("classPath", "one;two;three;");
     		allData .add(aNodeData);
     	}
     	return allData;
