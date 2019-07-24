@@ -411,14 +411,23 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label text="VM Name:" GridPane.rowIndex="1" />
+                              <Label text="VM Name:" GridPane.rowIndex="1">
+                                 <tooltip>
+                                    <Tooltip text="Name representing the running Java virtual machine." />
+                                 </tooltip></Label>
                               <Label fx:id="vmNameLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label text="VM Vendor:" GridPane.rowIndex="2" />
-                              <Label text="VM Version:" GridPane.rowIndex="3" />
+                              <Label text="VM Vendor:" GridPane.rowIndex="2">
+                                 <tooltip>
+                                    <Tooltip text="Java virtual machine implementation vendor." />
+                                 </tooltip></Label>
+                              <Label text="VM Version:" GridPane.rowIndex="3">
+                                 <tooltip>
+                                    <Tooltip text="Java virtual machine implementation version." />
+                                 </tooltip></Label>
                               <Label fx:id="vmVendorLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
@@ -434,7 +443,10 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <Label text="Class Path:" GridPane.rowIndex="4" />
+                              <Label text="Class Path:" GridPane.rowIndex="4">
+                                 <tooltip>
+                                    <Tooltip text="Java class path that is used by the system class loader to search for class files." />
+                                 </tooltip></Label>
                               <ListView fx:id="classPathListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                            </children>
                            <GridPane.margin>
