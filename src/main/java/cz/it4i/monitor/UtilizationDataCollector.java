@@ -53,6 +53,7 @@ public class UtilizationDataCollector implements Command {
 	@Parameter(type = ItemIO.OUTPUT)
 	private long freeSwapSpaceSize;
 	
+	// Operating System information:
 	@Parameter(type = ItemIO.OUTPUT)
 	private String name;
 	
@@ -61,6 +62,19 @@ public class UtilizationDataCollector implements Command {
 	
 	@Parameter(type = ItemIO.OUTPUT)
 	private String version;
+	
+	// Java Virtual Machine information:
+	@Parameter(type = ItemIO.OUTPUT)
+	private String vmName;
+	
+	@Parameter(type = ItemIO.OUTPUT)
+	private String vmVendor;
+	
+	@Parameter(type = ItemIO.OUTPUT)
+	private String vmVersion;
+	
+	@Parameter(type = ItemIO.OUTPUT)
+	private String classPath;	
 	
 	@Override
 	public void run() {		
@@ -72,40 +86,35 @@ public class UtilizationDataCollector implements Command {
 		OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(
 			OperatingSystemMXBean.class);
 		
-		processCpuLoad = osBean.getProcessCpuLoad();
-		
+		processCpuLoad = osBean.getProcessCpuLoad();		
 		systemCpuLoad = osBean.getSystemCpuLoad();
-		
 		availableProcessors = osBean.getAvailableProcessors();
-		
-		processCpuTime = osBean.getProcessCpuTime();
-		
-		// The bellow functionality is not supported on Windows, it always outputs "-1":
+		processCpuTime = osBean.getProcessCpuTime();		
+		// System load average method is not supported on Windows, it always outputs "-1":
 		systemLoadAverage = osBean.getSystemLoadAverage();
 		
 		// Memory:		
-		// Bellow measurements are in bytes:
-		totalPhysicalMemorySize = osBean.getTotalPhysicalMemorySize();
-		
-		freePhysicalMemorySize = osBean.getFreePhysicalMemorySize();
-		
+		// Size measurements are in bytes:
+		totalPhysicalMemorySize = osBean.getTotalPhysicalMemorySize();		
+		freePhysicalMemorySize = osBean.getFreePhysicalMemorySize();		
 		double usedPhysicalMemory = totalPhysicalMemorySize - freePhysicalMemorySize;
 		
 		// Calculate the utilization (in [0.0,1.0] interval):
-		memoryUtilization = usedPhysicalMemory/totalPhysicalMemorySize;
-		
-		committedVirtualMemorySize = osBean.getCommittedVirtualMemorySize();
-		
-		totalSwapSpaceSize = osBean.getTotalSwapSpaceSize();
-		
+		memoryUtilization = usedPhysicalMemory/totalPhysicalMemorySize;		
+		committedVirtualMemorySize = osBean.getCommittedVirtualMemorySize();		
+		totalSwapSpaceSize = osBean.getTotalSwapSpaceSize();		
 		freeSwapSpaceSize = osBean.getFreeSwapSpaceSize();
 		
 		// Operating System:
-		name = osBean.getName();
-		
-		arch = osBean.getArch();
-		
+		name = osBean.getName();		
+		arch = osBean.getArch();		
 		version = osBean.getVersion();
+		
+		// Java Virtual Machine:
+		classPath = runtimeBean.getClassPath();
+		vmName = runtimeBean.getVmName();
+		vmVendor = runtimeBean.getVmVendor();
+		vmVersion = runtimeBean.getVmVersion();
 	}
 
 }

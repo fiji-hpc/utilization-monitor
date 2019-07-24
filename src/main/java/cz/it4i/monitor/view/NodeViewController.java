@@ -56,6 +56,15 @@ public class NodeViewController {
     private Label versionLabel;
     
     @FXML
+    private Label vmVendorLabel;
+    
+    @FXML
+    private Label vmNameLabel;
+    
+    @FXML
+    private Label vmVersionLabel;    
+    
+    @FXML
     private LineChart<Double, Double> cpuUtilizationLineChart;
     
     @FXML
@@ -129,6 +138,10 @@ public class NodeViewController {
     	nameLabel.textProperty().bind(MainAppFrame.nameProperty);
     	archLabel.textProperty().bind(MainAppFrame.archProperty);
     	versionLabel.textProperty().bind(MainAppFrame.versionProperty);
+    	vmVendorLabel.textProperty().bind(MainAppFrame.vmVendorProperty);
+    	vmNameLabel.textProperty().bind(MainAppFrame.vmNameProperty);
+    	vmVersionLabel.textProperty().bind(MainAppFrame.vmVersionProperty);
+    	
     	
     	setupAxis(xAxisCpuUtilization, yAxisCpuUtilization, "CPU utilization (%) ", false);
     	setupAxis(xAxisMemoryUtilization, yAxisMemoryUtilization, "Memory utilization (%) ", false);

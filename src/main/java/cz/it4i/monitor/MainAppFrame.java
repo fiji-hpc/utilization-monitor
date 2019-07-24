@@ -69,6 +69,12 @@ public class MainAppFrame extends JFrame {
 	
 	public static SimpleStringProperty versionProperty = new SimpleStringProperty(MainAppFrame.class, "versionProperty");
 	
+	public static SimpleStringProperty vmNameProperty = new SimpleStringProperty(MainAppFrame.class, "vmNameProperty");
+	
+	public static SimpleStringProperty vmVendorProperty = new SimpleStringProperty(MainAppFrame.class, "vmVendorProperty");
+	
+	public static SimpleStringProperty vmVersionProperty = new SimpleStringProperty(MainAppFrame.class, "vmVersionProperty");
+	
 	public static ObservableList<XYChart.Series<Double, Double>> cpuObservableDataSeries = FXCollections.observableArrayList();
 	
 	public static ObservableList<XYChart.Series<Double, Double>> memoryObservableDataSeries = FXCollections.observableArrayList();
@@ -267,7 +273,16 @@ public class MainAppFrame extends JFrame {
 			archProperty.set(arch);
 			
 			String version = (String)selectedNodeInfo.getDataFromHistory(time, "version");
-			versionProperty.set(version);			
+			versionProperty.set(version);	
+			
+			String vmName = (String)selectedNodeInfo.getDataFromHistory(time, "vmName");
+			vmNameProperty.set(vmName);
+			
+			String vmVendor = (String)selectedNodeInfo.getDataFromHistory(time, "vmVendor");
+			vmVendorProperty.set(vmVendor);
+			
+			String vmVersion = (String)selectedNodeInfo.getDataFromHistory(time, "vmVersion");
+			vmVersionProperty.set(vmVersion);
 			
 			cpuSeries.setName("CPU Utilization");
 			memorySeries.setName("Memory Utilization");
@@ -334,6 +349,9 @@ public class MainAppFrame extends JFrame {
     		aNodeData.put("name", "Fake-Linux");
     		aNodeData.put("arch", "amd64");
     		aNodeData.put("version", "3.10.0-957.12.2.el7.x86_64");
+    		aNodeData.put("vmVendor", "Fake Corporation");
+    		aNodeData.put("vmName", "Fake Virtual Machine 64bit");
+    		aNodeData.put("vmVersion","fake-1.0");    		
     		allData .add(aNodeData);
     	}
     	return allData;
