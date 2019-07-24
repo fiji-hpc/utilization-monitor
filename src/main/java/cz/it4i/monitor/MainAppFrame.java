@@ -1,5 +1,6 @@
 package cz.it4i.monitor;
 
+import java.awt.Dimension;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -169,6 +170,11 @@ public class MainAppFrame extends JFrame {
     	
 		this.fxPanel.setScene(overviewScene);
 		this.setSize(600, 800);
+		
+		// Set a reasonable minimum allowed size:
+		Dimension minimum = new Dimension(550, 650);
+		this.setMinimumSize(minimum);
+		
 		this.fxPanel.setVisible(true);
     }
     
