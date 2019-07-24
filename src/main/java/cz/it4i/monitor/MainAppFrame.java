@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.JFXPanel;
@@ -21,7 +22,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
 import javax.swing.JFrame;
 import net.imagej.ImageJ;
@@ -61,6 +61,12 @@ public class MainAppFrame extends JFrame {
 	public static SimpleDoubleProperty processCpuTimeProperty = new SimpleDoubleProperty(MainAppFrame.class, "processCpuTimeProperty");
 	
 	public static SimpleDoubleProperty systemLoadAverageProperty = new SimpleDoubleProperty(MainAppFrame.class, "systemLoadAverageProperty");
+	
+	public static SimpleStringProperty nameProperty = new SimpleStringProperty(MainAppFrame.class, "nameProperty");
+	
+	public static SimpleStringProperty archProperty = new SimpleStringProperty(MainAppFrame.class, "archProperty");
+	
+	public static SimpleStringProperty versionProperty = new SimpleStringProperty(MainAppFrame.class, "versionProperty");
 	
 	public static ObservableList<XYChart.Series<Double, Double>> cpuObservableDataSeries = FXCollections.observableArrayList();
 	
@@ -248,6 +254,15 @@ public class MainAppFrame extends JFrame {
 			Double systemLoadAverage = (Double)selectedNodeInfo.getDataFromHistory(time, "systemLoadAverage");
 			systemLoadAverageProperty.set(systemLoadAverage);
 			
+			String name = (String)selectedNodeInfo.getDataFromHistory(time, "name");
+			nameProperty.set(name);
+			
+			String arch = (String)selectedNodeInfo.getDataFromHistory(time, "arch");
+			archProperty.set(arch);
+			
+			String version = (String)selectedNodeInfo.getDataFromHistory(time, "version");
+			versionProperty.set(version);			
+			
 			cpuSeries.setName("CPU Utilization");
 			memorySeries.setName("Memory Utilization");
 			swapSeries.setName("Swap Utilization");
@@ -310,6 +325,9 @@ public class MainAppFrame extends JFrame {
     		aNodeData.put("processCpuLoad", rand.nextDouble());
     		aNodeData.put("processCpuTime", fakeTime*Math.pow(10, 6));
     		aNodeData.put("systemLoadAverage", rand.nextDouble()*(fakeNumberOfNodes+1));
+    		aNodeData.put("name", "Fake-Linux");
+    		aNodeData.put("arch", "amd64");
+    		aNodeData.put("version", "3.10.0-957.12.2.el7.x86_64");
     		allData .add(aNodeData);
     	}
     	return allData;

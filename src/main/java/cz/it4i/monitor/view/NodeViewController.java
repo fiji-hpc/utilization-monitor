@@ -47,6 +47,15 @@ public class NodeViewController {
     private Label systemLoadAverageLabel;
     
     @FXML
+    private Label nameLabel;
+    
+    @FXML
+    private Label archLabel;
+    
+    @FXML
+    private Label versionLabel;
+    
+    @FXML
     private LineChart<Double, Double> cpuUtilizationLineChart;
     
     @FXML
@@ -117,6 +126,9 @@ public class NodeViewController {
     	processCpuLoadLabel.textProperty().bind(MainAppFrame.processCpuLoadProperty.asString(format));
     	processCpuTimeLabel.textProperty().bind(MainAppFrame.processCpuTimeProperty.asString(format));
     	systemLoadAverageLabel.textProperty().bind(MainAppFrame.systemLoadAverageProperty.asString(format));
+    	nameLabel.textProperty().bind(MainAppFrame.nameProperty);
+    	archLabel.textProperty().bind(MainAppFrame.archProperty);
+    	versionLabel.textProperty().bind(MainAppFrame.versionProperty);
     	
     	setupAxis(xAxisCpuUtilization, yAxisCpuUtilization, "CPU utilization (%) ", false);
     	setupAxis(xAxisMemoryUtilization, yAxisMemoryUtilization, "Memory utilization (%) ", false);

@@ -53,7 +53,14 @@ public class UtilizationDataCollector implements Command {
 	@Parameter(type = ItemIO.OUTPUT)
 	private long freeSwapSpaceSize;
 	
-
+	@Parameter(type = ItemIO.OUTPUT)
+	private String name;
+	
+	@Parameter(type = ItemIO.OUTPUT)
+	private String arch;
+	
+	@Parameter(type = ItemIO.OUTPUT)
+	private String version;
 	
 	@Override
 	public void run() {		
@@ -92,6 +99,13 @@ public class UtilizationDataCollector implements Command {
 		totalSwapSpaceSize = osBean.getTotalSwapSpaceSize();
 		
 		freeSwapSpaceSize = osBean.getFreeSwapSpaceSize();
+		
+		// Operating System:
+		name = osBean.getName();
+		
+		arch = osBean.getArch();
+		
+		version = osBean.getVersion();
 	}
 
 }
