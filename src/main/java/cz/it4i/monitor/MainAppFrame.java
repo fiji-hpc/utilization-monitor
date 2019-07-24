@@ -113,10 +113,7 @@ public class MainAppFrame extends JFrame {
     
     private GridPane overviewFxml;
     
-    private GridPane nodeFxml; 
-	
-    @Parameter
-    private LogService log;
+    private GridPane nodeFxml;
 
     private ImageJ ij;
 

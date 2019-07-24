@@ -3,11 +3,13 @@ package cz.it4i.monitor.view;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-
-import java.text.DecimalFormat;
-
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import cz.it4i.monitor.MainAppFrame;
 
 public class NodeViewController {
@@ -81,7 +83,7 @@ public class NodeViewController {
     private LineChart<Double, Double> averageLoadLineChart;
     
     @FXML
-    private ListView classPathListView;
+    private ListView<String> classPathListView = new ListView<String>();
     
     @FXML
     private NumberAxis xAxisCpuUtilization;
@@ -167,9 +169,43 @@ public class NodeViewController {
     	swapUtilizationLineChart.setData(MainAppFrame.swapObservableDataSeries);
     	processLoadLineChart.setData(MainAppFrame.processObservableDataSeries);
     	averageLoadLineChart.setData(MainAppFrame.averageObservableDataSeries);
-    }
+    	
+    	addCopyContextMenu();
+	}
+    
+    // Add copy context menu to each ListView cell:
+    private void addCopyContextMenu() {
+    	classPathListView.setCellFactory(lv -> {
+        	ListCell<String> cell = new ListCell<>();
 
-    @FXML
+        	ContextMenu contextMenu = new ContextMenu();
+
+        	MenuItem editItem = new MenuItem();
+        	editItem.textProperty().set("Copy");;
+        	editItem.setOnAction(event -> {
+        		String item = cell.getItem();
+        		// Copy to clipboard:
+        		final Clipboard clipboard = Clipboard.getSystemClipboard();
+        		final ClipboardContent content = new ClipboardContent();
+        		content.putString(item);
+        		clipboard.setContent(content);
+        	});
+        	contextMenu.getItems().addAll(editItem);
+
+        	cell.textProperty().bind(cell.itemProperty());
+
+        	cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
+        		if (isNowEmpty) {
+        			cell.setContextMenu(null);
+        		} else {
+        			cell.setContextMenu(contextMenu);
+        		}
+        	});
+        	return cell ;
+    	});		
+	}
+
+	@FXML
     private void handleOverview() {
         MainAppFrame.fxPanel.setScene(MainAppFrame.overviewScene);
     }
