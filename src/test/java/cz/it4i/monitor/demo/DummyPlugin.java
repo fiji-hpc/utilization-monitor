@@ -1,12 +1,13 @@
 
 package cz.it4i.monitor.demo;
 
-import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import net.imagej.ImageJ;
+import net.imagej.ops.math.PrimitiveMath;
 
 import org.scijava.Context;
 import org.scijava.command.Command;
@@ -16,13 +17,12 @@ import org.scijava.plugin.Plugin;
 import cz.it4i.monitor.UtilizationMonitor;
 import cz.it4i.parallel.Host;
 import cz.it4i.parallel.MultipleHostParadigm;
-import cz.it4i.parallel.imagej.server.ImageJServerParadigm;
 import cz.it4i.parallel.runners.HPCSettings;
 import cz.it4i.parallel.ui.HPCImageJServerRunnerWithUI;
 import cz.it4i.parallel.ui.HPCSettingsGui;
-import net.imagej.ImageJ;
-import net.imagej.ops.math.PrimitiveMath;
-import net.imagej.plugins.commands.imglib.RotateImageXY;
+
+import cz.it4i.parallel.utils.TestParadigm;
+//import net.imagej.plugins.commands.imglib.RotateImageXY;
 
 
 
@@ -31,24 +31,23 @@ public class DummyPlugin implements Command {
 	@Parameter
 	private ImageJ ij;
 	
-	private static Context context;
+	@Parameter
+	private Context context;
 	
 	@Override
 	public void run() {
-		
-		context = ij.context();
 		try ( MultipleHostParadigm paradigm = constructParadigm()) {
-//			Map<String, Object> parameters = new HashMap<>();
-//			parameters.put("paradigm", paradigm);			
-//			ij.command().run(UtilizationMonitor.class, true, parameters );
-//			
-////			try {
-//				//RotateFile.callRemotePlugin(paradigm, 200);
-//				this.callSimpleRemotePlugin(paradigm);				
-//				
-////			} catch (IOException e) {
-////				e.printStackTrace();
-////			}
+			Map<String, Object> parameters = new HashMap<>();
+			parameters.put("paradigm", paradigm);			
+			ij.command().run(UtilizationMonitor.class, true, parameters );
+			
+//			try {
+				//RotateFile.callRemotePlugin(paradigm, 200);
+				this.callSimpleRemotePlugin(paradigm);				
+				
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
 		}
 	}
 	
@@ -62,26 +61,27 @@ public class DummyPlugin implements Command {
 				paradigm.runAll(PrimitiveMath.DoubleMultiply.class, parametersList);
 	}
 	
-	private static MultipleHostParadigm constructParadigm()
-		{
-			HashMap<Object, Object> requestData = new HashMap<>();
-			HPCSettings settings = null;
-			boolean shutDownOnClose = true;
-			shutDownOnClose = false;
-			settings = HPCSettingsGui.showDialog(context);
-			requestData.put(HPCSettings.class, settings);
-			final HPCSettings finalHpcSettings = settings;
+	private MultipleHostParadigm constructParadigm() {
+		HashMap<Object, Object> requestData = new HashMap<>();
+		HPCSettings settings = null;
+		boolean shutDownOnClose = true;
+		shutDownOnClose = false;
+		settings = HPCSettingsGui.showDialog(context);
+		requestData.put(HPCSettings.class, settings);
+		final HPCSettings finalHpcSettings = settings;
 
-			final HPCImageJServerRunnerWithUI runner = new HPCImageJServerRunnerWithUI(finalHpcSettings, shutDownOnClose);
-			
-			MultipleHostParadigm innerParadigm = new ImageJServerParadigm();
-			runner.start();
-			List<Host> hosts = Host.constructListFromNamesAndCores(runner.getRemoteHosts(), runner.getNCores());			
-			innerParadigm.setHosts(hosts);
-			innerParadigm.init();		
-			System.out.println("Used these hosts: "+hosts.toString());
-			
-			return innerParadigm;
-		}
+		final HPCImageJServerRunnerWithUI runner = new HPCImageJServerRunnerWithUI(
+			finalHpcSettings, shutDownOnClose);
 
+		@SuppressWarnings("resource")
+		TestParadigm testParadigm = new TestParadigm(runner, context);
+
+		MultipleHostParadigm innerParadigm = (MultipleHostParadigm) testParadigm
+			.getParadigm();
+		List<Host> hosts = Host.constructListFromNamesAndCores(runner
+			.getRemoteHosts(), runner.getNCores());
+		System.out.println("Used these hosts: " + hosts.toString());
+
+		return innerParadigm;
+	}
 }

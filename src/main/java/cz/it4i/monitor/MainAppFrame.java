@@ -109,7 +109,7 @@ public class MainAppFrame extends JFrame {
     private static boolean firstTime = true;
     
 	// Paradigm related variables:
-	//final MultipleHostParadigm paradigm;
+	static MultipleHostParadigm paradigm;
     
     private GridPane overviewFxml;
     
@@ -117,10 +117,10 @@ public class MainAppFrame extends JFrame {
 
     private ImageJ ij;
 
-    public MainAppFrame(ImageJ ij) {//, MultipleHostParadigm paradigm) {
+    public MainAppFrame(ImageJ ij, MultipleHostParadigm paradigm) {
         ij.context().inject(this);
         this.ij = ij;
-        //this.paradigm = paradigm;
+        this.paradigm = paradigm;
     }
 
     /**
@@ -187,7 +187,13 @@ public class MainAppFrame extends JFrame {
     public static List<Map<String, Object>> runMonitor() {
     	List<Map<String, Object>> allData = new LinkedList<>();
     	
-    	allData = MainAppFrame.fakeRunAll();
+    	// Enable the line bellow to use the dummy data for testing instead:
+    	//allData = MainAppFrame.fakeRunAll();
+    	
+    	// Get the real data:
+    	HashMap parameters = new HashMap<>();
+    	allData = paradigm.runOnHosts(
+    		UtilizationDataCollector.class.getName(), parameters, paradigm.getHosts());
     	
     	//System.out.println(allData.toString());
     	
