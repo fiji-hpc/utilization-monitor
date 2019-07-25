@@ -248,13 +248,15 @@ public class MainAppFrame extends JFrame {
 			NodeInfo selectedNodeInfo = MainAppFrame.nodeInfoList.get(MainAppFrame.selectedNode);
 			
 			// Set the observable properties:
-			Double totalPhysicalMemorySize = (Double)selectedNodeInfo.getDataFromHistory(time, "totalPhysicalMemorySize");
+			Long totalPhysicalMemorySize = (Long) selectedNodeInfo.getDataFromHistory(
+				time, "totalPhysicalMemorySize");
 			totalPhysicalMemorySizeProperty.set(totalPhysicalMemorySize/Math.pow(10, 9));
 			
 			Integer availableProcessors = (Integer)selectedNodeInfo.getDataFromHistory(time, "availableProcessors");
 			availableProcessorsProperty.set(availableProcessors.intValue());
 			
-			Long totalSwapSpaceSize = (Long)selectedNodeInfo.getDataFromHistory(time, "totalSwapSpaceSize");
+			Long totalSwapSpaceSize = (Long) selectedNodeInfo
+				.getDataFromHistory(time, "totalSwapSpaceSize");
 			totalSwapSpaceSizeProperty.set(totalSwapSpaceSize/Math.pow(10, 9));
 			
 			Long freeSwapSpaceSize = (Long)selectedNodeInfo.getDataFromHistory(time, "freeSwapSpaceSize");
@@ -266,7 +268,8 @@ public class MainAppFrame extends JFrame {
 			Double processCpuLoad = (Double)selectedNodeInfo.getDataFromHistory(time, "processCpuLoad");
 			processCpuLoadProperty.set(processCpuLoad*100);
 			
-			Double processCpuTime = (Double)selectedNodeInfo.getDataFromHistory(time, "processCpuTime");
+			Long processCpuTime = (Long) selectedNodeInfo.getDataFromHistory(time,
+				"processCpuTime");
 			processCpuTimeProperty.set(processCpuTime*Math.pow(10, -9));
 			
 			Double systemLoadAverage = (Double)selectedNodeInfo.getDataFromHistory(time, "systemLoadAverage");

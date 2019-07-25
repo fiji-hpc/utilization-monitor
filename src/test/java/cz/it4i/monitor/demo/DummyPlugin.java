@@ -17,12 +17,10 @@ import org.scijava.plugin.Plugin;
 import cz.it4i.monitor.UtilizationMonitor;
 import cz.it4i.parallel.Host;
 import cz.it4i.parallel.MultipleHostParadigm;
+import cz.it4i.parallel.fst.utils.RemoteTestParadigm;
+import cz.it4i.parallel.fst.utils.TestFSTRPCParadigm;
 import cz.it4i.parallel.runners.HPCSettings;
-import cz.it4i.parallel.ui.HPCImageJServerRunnerWithUI;
 import cz.it4i.parallel.ui.HPCSettingsGui;
-
-import cz.it4i.parallel.utils.TestParadigm;
-//import net.imagej.plugins.commands.imglib.RotateImageXY;
 
 
 
@@ -62,26 +60,27 @@ public class DummyPlugin implements Command {
 	}
 	
 	private MultipleHostParadigm constructParadigm() {
-		HashMap<Object, Object> requestData = new HashMap<>();
-		HPCSettings settings = null;
-		boolean shutDownOnClose = true;
-		shutDownOnClose = false;
-		settings = HPCSettingsGui.showDialog(context);
-		requestData.put(HPCSettings.class, settings);
-		final HPCSettings finalHpcSettings = settings;
 
-		final HPCImageJServerRunnerWithUI runner = new HPCImageJServerRunnerWithUI(
-			finalHpcSettings, shutDownOnClose);
 
 		@SuppressWarnings("resource")
-		TestParadigm testParadigm = new TestParadigm(runner, context);
+		RemoteTestParadigm testParadigm = TestFSTRPCParadigm.hpcFSTRPCServer(
+			context);
 
 		MultipleHostParadigm innerParadigm = (MultipleHostParadigm) testParadigm
 			.getParadigm();
-		List<Host> hosts = Host.constructListFromNamesAndCores(runner
-			.getRemoteHosts(), runner.getNCores());
+		List<Host> hosts = Host.constructListFromNamesAndCores(testParadigm
+			.getRemoteHosts(), testParadigm.getNCores());
 		System.out.println("Used these hosts: " + hosts.toString());
 
 		return innerParadigm;
+	}
+
+	public static void main(final String... args) throws Exception {
+		// create the ImageJ application context with all available services
+		final ImageJ ij = new ImageJ();
+		ij.ui().showUI();
+
+		// invoke the plugin
+		ij.command().run(DummyPlugin.class, true);
 	}
 }
