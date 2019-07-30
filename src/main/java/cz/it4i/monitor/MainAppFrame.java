@@ -316,7 +316,8 @@ public class MainAppFrame extends JFrame {
 			systemCpuLoadProperty.set(cpuUtilization*100);
 			Double memoryUtilization = (Double)selectedNodeInfo.getDataFromHistory(time, "memoryUtilization");
 			memoryUtilizationProperty.set(memoryUtilization*100);
-			freePhysicalMemorySizeProperty.set(totalPhysicalMemorySize/Math.pow(10, 9) * memoryUtilization);
+			Long freePhysicalMemorySize = (Long)selectedNodeInfo.getDataFromHistory(time, "freePhysicalMemorySize");
+			freePhysicalMemorySizeProperty.set(((double)freePhysicalMemorySize)/((double)Math.pow(10, 9)));
 			
 			cpuSeries.getData().add(
 					new XYChart.Data<Double, Double>(uptime / 1000.0, cpuUtilization*100)

@@ -1,6 +1,7 @@
 
 package cz.it4i.monitor.demo;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,13 +40,13 @@ public class DummyPlugin implements Command {
 			parameters.put("paradigm", paradigm);			
 			ij.command().run(UtilizationMonitor.class, true, parameters );
 			
-//			try {
-				//RotateFile.callRemotePlugin(paradigm, 200);
-				this.callSimpleRemotePlugin(paradigm);				
+			try {
+				RotateFile.callRemotePlugin(paradigm, 200);
+				//this.callSimpleRemotePlugin(paradigm);				
 				
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
