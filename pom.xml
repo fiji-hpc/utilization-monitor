@@ -16,27 +16,26 @@
 	<artifactId>utilization-monitor</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 
-	<name>Gauss Filtering</name>
-	<description>A Maven project implementing an ImageJ command.</description>
-	<url>https://mycompany.com/imagej/gauss-filtering/</url>
+	<name>Utilization Monitor</name>
+	<description>This is a plugin that provides compute node CPU and memory utilization feedback to the users.</description>
+	<url>https://github.com/fiji-hpc/utilization-monitor</url>
 	<inceptionYear>2019</inceptionYear>
 	<organization>
-		<name>it4innovations</name>
+		<name>IT4Innovations</name>
 		<url>https://www.it4i.cz</url>
 	</organization>
 	<licenses>
 		<license>
-			<name>Simplified BSD License</name>
+			<name>MIT</name>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
 
 	<developers>
-		<!-- See https://imagej.net/Team -->
 		<developer>
 			<id>dsv</id>
 			<name>Dimitrios Stefanos Velissariou</name>
-			<url>https://imagej.net/</url>
+			<url>https://www.it4i.cz/</url>
 			<roles>
 				<role>developer</role>
 			</roles>
@@ -51,32 +50,11 @@
 		</contributor>
 	</contributors>
 
-	<mailingLists>
-		<mailingList>
-			<name>Image.sc Forum</name>
-			<archive>https://forum.image.sc/tags/imagej</archive>
-		</mailingList>
-	</mailingLists>
-
-	<scm>
-		<connection>scm:git:git://github.com/imagej/example-imagej-command</connection>
-		<developerConnection>scm:git:git@github.com:imagej/example-imagej-command</developerConnection>
-		<tag>HEAD</tag>
-		<url>https://github.com/imagej/example-imagej-command</url>
-	</scm>
-	<issueManagement>
-		<system>GitHub Issues</system>
-		<url>https://github.com/imagej/example-imagej-command/issues</url>
-	</issueManagement>
-	<ciManagement>
-		<system>None</system>
-	</ciManagement>
-
 	<properties>
-		<package-name>com.mycompany.imagej</package-name>
-		<main-class>com.mycompany.imagej.GaussFiltering</main-class>
-		<license.licenseName>bsd_2</license.licenseName>
-		<license.copyrightOwners>My Company, Inc.</license.copyrightOwners>
+		<package-name>cz.it4i.imagej</package-name>
+		<main-class>cz.it4i.imagej.UtilizationMonitor</main-class>
+		<license.licenseName>mit</license.licenseName>
+		<license.copyrightOwners>IT4Innovations</license.copyrightOwners>
 	</properties>
 
 	<repositories>
