@@ -28,16 +28,10 @@ import javafx.scene.layout.GridPane;
 import javax.swing.JFrame;
 import net.imagej.ImageJ;
 
-import org.scijava.Context;
-import org.scijava.log.LogService;
-import org.scijava.parallel.ParallelizationParadigm;
-import org.scijava.plugin.Parameter;
-
 import cz.it4i.monitor.model.NodeInfo;
 import cz.it4i.monitor.view.NodeViewController;
 import cz.it4i.monitor.view.OverviewViewController;
 import cz.it4i.parallel.MultipleHostParadigm;
-import cz.it4i.parallel.utils.TestParadigm;
 
 public class MainAppFrame extends JFrame {
 	public static SimpleIntegerProperty selectedNodeProperty = new SimpleIntegerProperty(MainAppFrame.class, "selectedNodeProperty");

@@ -20,10 +20,6 @@ import cz.it4i.parallel.Host;
 import cz.it4i.parallel.MultipleHostParadigm;
 import cz.it4i.parallel.fst.utils.RemoteTestParadigm;
 import cz.it4i.parallel.fst.utils.TestFSTRPCParadigm;
-import cz.it4i.parallel.runners.HPCSettings;
-import cz.it4i.parallel.ui.HPCSettingsGui;
-
-
 
 @Plugin(headless = true, type = Command.class, menuPath = "Plugins>Utilities>Dummy Plugin")
 public class DummyPlugin implements Command {
