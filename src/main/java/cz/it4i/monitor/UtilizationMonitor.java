@@ -24,7 +24,7 @@ public class UtilizationMonitor implements Command {
     @Override
     public void run() {    	        
     	if (paradigm == null) {
-    		if(paradigm instanceof MultipleHostParadigm) {
+    		if(service.getParadigm() instanceof MultipleHostParadigm) {
     			paradigm = (MultipleHostParadigm) service.getParadigm();
     		} else {
     			ij.log().error("The utilization-monitor plugin works only with MultipleHostParadigm!");
