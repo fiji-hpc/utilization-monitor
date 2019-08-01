@@ -82,7 +82,7 @@ public class MainAppFrame {
 			// Load the overview scene:
 			FXMLLoader loader = new FXMLLoader();
 			// Load the FXML files.
-			loader.setLocation(MainAppFrame.class.getResource("view/OverviewView.fxml"));
+			loader.setLocation(getClass().getResource("/OverviewView.fxml"));
 			overviewFxml = loader.load();
 			// Give the controller access to the main app.
 			OverviewViewController overviewViewController = loader.getController();
@@ -91,7 +91,7 @@ public class MainAppFrame {
 
 			// Load the node scene:
 			FXMLLoader newLoader = new FXMLLoader();
-			newLoader.setLocation(MainAppFrame.class.getResource("view/NodeView.fxml"));
+			newLoader.setLocation(getClass().getResource("/NodeView.fxml"));
 			nodeFxml = newLoader.load();
 			NodeViewController nodeViewController = newLoader.getController();
 			nodeViewController.setMainApp(this);
