@@ -24,13 +24,11 @@ public class Config {
 	static {
 		properties = new Properties();
 		try {
-			final InputStream resource = Config.class.getClassLoader().getResourceAsStream(
-					CONFIG_FILE_NAME );
-			if( resource == null )
-				throw new RuntimeException( "Configuration file " + CONFIG_FILE_NAME + " needs to be set up correctly." );
-			properties.load( resource );
-		}
-		catch (final IOException e) {
+			final InputStream resource = Config.class.getClassLoader().getResourceAsStream(CONFIG_FILE_NAME);
+			if (resource == null)
+				throw new RuntimeException("Configuration file " + CONFIG_FILE_NAME + " needs to be set up correctly.");
+			properties.load(resource);
+		} catch (final IOException e) {
 			log.error(e.getMessage(), e);
 		}
 	}

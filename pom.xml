@@ -45,8 +45,12 @@
 		<contributor>
 			<name>Dimitrios Stefanos Velissariou</name>
 			<url>https://imagej.net/</url>
-			<roles><role>developer</role></roles>
-			<properties><id>dsv</id></properties>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<properties>
+				<id>dsv</id>
+			</properties>
 		</contributor>
 	</contributors>
 
@@ -62,7 +66,7 @@
 			<id>scijava.public</id>
 			<url>https://maven.scijava.org/content/groups/public</url>
 		</repository>
-		
+
 		<repository>
 			<id>it4i</id>
 			<url>https://artifactory.cs.vsb.cz/it4i/</url>
@@ -81,17 +85,17 @@
 			<artifactId>slf4j-simple</artifactId>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.imagej</groupId>
 			<artifactId>imagej</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.imagej</groupId>
 			<artifactId>imagej-legacy</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.scijava</groupId>
 			<artifactId>scijava-parallel</artifactId>
@@ -102,6 +106,14 @@
 			<artifactId>scijava-parallel-fst</artifactId>
 			<version>3.1.0-SNAPSHOT</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.16</version>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 
 </project>
