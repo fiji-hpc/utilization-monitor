@@ -25,6 +25,7 @@ public class UtilizationMonitor implements Command {
 
 	@Override
 	public void run() {
+		// Check if the utilization monitor should run:
 		if (paradigm == null) {
 			if (service.getParadigm() instanceof MultipleHostParadigm) {
 				paradigm = (MultipleHostParadigm) service.getParadigm();
@@ -41,6 +42,7 @@ public class UtilizationMonitor implements Command {
 				return;
 			}
 		}
+		
 		// Launch JavaFX interface
 		MainAppFrame app = new MainAppFrame(ij, paradigm);
 		app.init();

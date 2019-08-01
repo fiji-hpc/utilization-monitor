@@ -19,7 +19,7 @@ import lombok.Setter;
 import net.imagej.ImageJ;
 
 public class MainAppFrame {
-	
+
 	@Getter
 	@Setter
 	private DataLoader dataLoader;
@@ -72,9 +72,9 @@ public class MainAppFrame {
 
 	public void initFX(JFXPanel aFxPanel) {
 		// Get the utilization data every second:
-		dataLoader = new DataLoader(paradigm, false);
+		dataLoader = new DataLoader(paradigm, new RealDataGenerator());
 		dataLoader.getDataEverySecond();
-		
+
 		// Load the two scenes:
 		GridPane overviewFxml = null;
 		GridPane nodeFxml = null;
@@ -84,7 +84,7 @@ public class MainAppFrame {
 			// Load the FXML files.
 			loader.setLocation(getClass().getResource("/OverviewView.fxml"));
 			overviewFxml = loader.load();
-			// Give the controller access to the main app.
+			// Give the controller access to the main application.
 			OverviewViewController overviewViewController = loader.getController();
 			overviewViewController.setMainApp(this);
 			overviewViewController.initializeBindings();

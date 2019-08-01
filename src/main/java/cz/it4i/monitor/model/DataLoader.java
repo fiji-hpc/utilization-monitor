@@ -2,16 +2,13 @@ package cz.it4i.monitor.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import cz.it4i.monitor.UtilizationDataCollector;
+import cz.it4i.monitor.IDataGenerator;
 import cz.it4i.parallel.MultipleHostParadigm;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -102,25 +99,15 @@ public class DataLoader {
 
 	@Getter(AccessLevel.NONE)
 	@Setter(AccessLevel.NONE)
-	private Random rand = new Random();
-
-	@Getter(AccessLevel.NONE)
-	@Setter(AccessLevel.NONE)
-	private long fakeTime = 0;
-
-	@Getter(AccessLevel.NONE)
-	@Setter(AccessLevel.NONE)
-	private boolean testMode = false;
-
-	@Getter(AccessLevel.NONE)
-	@Setter(AccessLevel.NONE)
 	private MultipleHostParadigm paradigm;
 
-	// Test mode uses a fake data generator, used to work on GUI without the need to
-	// run remotely.
-	public DataLoader(MultipleHostParadigm paradigm, boolean testMode) {
+	private IDataGenerator dataGenerator;
+
+	// Change data generator to use real or fake data, fake data are useful in
+	// order to test the GUI.
+	public DataLoader(MultipleHostParadigm paradigm, IDataGenerator dataGenerator) {
 		this.paradigm = paradigm;
-		this.testMode = testMode;
+		this.dataGenerator = dataGenerator;
 	}
 
 	public void getDataEverySecond() {
@@ -216,18 +203,12 @@ public class DataLoader {
 			Long freePhysicalMemorySize = (Long) selectedNodeInfo.getDataFromHistory(time, "freePhysicalMemorySize");
 			freePhysicalMemorySizeProperty.set(((double) freePhysicalMemorySize) / Math.pow(10, 9));
 
-			cpuSeries.getData().add(new XYChart.Data<>(uptime / 1000.0,
-				cpuUtilization * 100));
-			memorySeries.getData().add(new XYChart.Data<>(uptime / 1000.0,
-				memoryUtilization * 100));
+			cpuSeries.getData().add(new XYChart.Data<>(uptime / 1000.0, cpuUtilization * 100));
+			memorySeries.getData().add(new XYChart.Data<>(uptime / 1000.0, memoryUtilization * 100));
 			swapSeries.getData().add(new XYChart.Data<>(uptime / 1000.0,
-				(totalSwapSpaceSize - freeSwapSpaceSize) / (double) totalSwapSpaceSize *
-					100));
-			processSeries.getData()
-				.add(new XYChart.Data<>(processCpuTime * Math.pow(10, -9),
-					processCpuLoad * 100));
-			averageSeries.getData().add(new XYChart.Data<>(uptime / 1000.0,
-				systemLoadAverage * 100));
+					(totalSwapSpaceSize - freeSwapSpaceSize) / (double) totalSwapSpaceSize * 100));
+			processSeries.getData().add(new XYChart.Data<>(processCpuTime * Math.pow(10, -9), processCpuLoad * 100));
+			averageSeries.getData().add(new XYChart.Data<>(uptime / 1000.0, systemLoadAverage * 100));
 		}
 		if (cpuObservableDataSeries.isEmpty()) {
 			cpuObservableDataSeries.add(cpuSeries);
@@ -247,13 +228,8 @@ public class DataLoader {
 	private void runMonitor() {
 		List<Map<String, Object>> allData;
 
-		// Get the real or fake data depending on mode:
-		if (!testMode) {
-			Map<String, Object> parameters = new HashMap<>();
-			allData = paradigm.runOnHosts(UtilizationDataCollector.class.getName(), parameters, paradigm.getHosts());
-		} else {
-			allData = fakeRunAll();
-		}
+		// Get the data:
+		allData = dataGenerator.generate(paradigm);
 
 		// Count the number of nodes from the first response:
 		if (firstTime) {
@@ -274,38 +250,6 @@ public class DataLoader {
 		for (int index = 0; index < numberOfNodes; index++) {
 			nodeInfoList.get(index).addToHistory(allData.get(index));
 		}
-	}
-
-	// Fake runAll function that returns mock-up data:
-	private List<Map<String, Object>> fakeRunAll() {
-		fakeTime += 1000;
-		int fakeNumberOfNodes = 20;
-		List<Map<String, Object>> allData = new LinkedList<>();
-		for (int index = 0; index < fakeNumberOfNodes; index++) {
-			Map<String, Object> aNodeData = new HashMap<>();
-			aNodeData.put("uptime", fakeTime);
-			double fakeMemoryUtilization = rand.nextDouble();
-			aNodeData.put("memoryUtilization", fakeMemoryUtilization);
-			aNodeData.put("systemCpuLoad", rand.nextDouble());
-			aNodeData.put("availableProcessors", 128);
-			aNodeData.put("totalPhysicalMemorySize", 64 * (long) Math.pow(10, 9));
-			aNodeData.put("committedVirtualMemorySize", 729411584L);
-			aNodeData.put("totalSwapSpaceSize", 12489793536L);
-			aNodeData.put("freeSwapSpaceSize", 5837094912L);
-			aNodeData.put("processCpuLoad", rand.nextDouble());
-			aNodeData.put("processCpuTime", fakeTime * (long) Math.pow(10, 6));
-			aNodeData.put("systemLoadAverage", rand.nextDouble() * (fakeNumberOfNodes + 1));
-			aNodeData.put("name", "Fake-Linux");
-			aNodeData.put("arch", "amd64");
-			aNodeData.put("version", "3.10.0-957.12.2.el7.x86_64");
-			aNodeData.put("vmVendor", "Fake Corporation");
-			aNodeData.put("vmName", "Fake Virtual Machine 64bit");
-			aNodeData.put("vmVersion", "fake-1.0");
-			aNodeData.put("freePhysicalMemorySize", 16L * (long) Math.pow(10, 9));
-			aNodeData.put("classPath", "one;two;three;");
-			allData.add(aNodeData);
-		}
-		return allData;
 	}
 
 	public void stopUpdatingData() {
