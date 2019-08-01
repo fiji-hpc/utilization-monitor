@@ -56,26 +56,22 @@
 
 	<mailingLists>
 		<mailingList>
-			<name>Image.sc Forum</name>
-			<archive>https://forum.image.sc/tags/utilization-monitor</archive>
+			<archive>none</archive>
 		</mailingList>
 	</mailingLists>
 
 	<scm>
-		<connection>scm:git:git://github.com/imagej/imagej-server</connection>
-		<developerConnection>scm:git:git@github.com:imagej/imagej-server</developerConnection>
 		<tag>HEAD</tag>
 		<url>https://github.com/fiji-hpc/utilization-monitor</url>
 	</scm>
 	
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/imagej/imagej-server</url>
+		<url>https://github.com/fiji-hpc/utilization-monitor/issues</url>
 	</issueManagement>
 	
 	<ciManagement>
-		<system>Travis CI</system>
-		<url>https://travis-ci.org/imagej/imagej-server</url>
+		<system>none</system>
 	</ciManagement>
 
 	<properties>
