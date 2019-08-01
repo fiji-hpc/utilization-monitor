@@ -6,7 +6,7 @@ import java.util.Map;
 
 import cz.it4i.parallel.MultipleHostParadigm;
 
-public class RealDataGenerator implements IDataGenerator{
+public class RealDataGenerator implements DataGenerator{
 
 	@Override
 	public List<Map<String, Object>> generate(MultipleHostParadigm paradigm) {

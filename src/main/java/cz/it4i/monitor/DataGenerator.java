@@ -5,6 +5,6 @@ import java.util.Map;
 
 import cz.it4i.parallel.MultipleHostParadigm;
 
-public interface IDataGenerator {
+public interface DataGenerator {
 	public List<Map<String, Object>> generate(MultipleHostParadigm paradigm);
 }

@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import cz.it4i.monitor.IDataGenerator;
+import cz.it4i.monitor.DataGenerator;
 import cz.it4i.parallel.MultipleHostParadigm;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -101,11 +101,11 @@ public class DataLoader {
 	@Setter(AccessLevel.NONE)
 	private MultipleHostParadigm paradigm;
 
-	private IDataGenerator dataGenerator;
+	private DataGenerator dataGenerator;
 
 	// Change data generator to use real or fake data, fake data are useful in
 	// order to test the GUI.
-	public DataLoader(MultipleHostParadigm paradigm, IDataGenerator dataGenerator) {
+	public DataLoader(MultipleHostParadigm paradigm, DataGenerator dataGenerator) {
 		this.paradigm = paradigm;
 		this.dataGenerator = dataGenerator;
 	}

@@ -8,7 +8,7 @@ import java.util.Random;
 
 import cz.it4i.parallel.MultipleHostParadigm;
 
-public class FakeDataGenerator implements IDataGenerator{
+public class FakeDataGenerator implements DataGenerator{
 
 	private long fakeTime = 0;
 	
