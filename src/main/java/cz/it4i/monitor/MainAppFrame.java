@@ -72,7 +72,7 @@ public class MainAppFrame {
 
 	public void initFX(JFXPanel aFxPanel) {
 		// Get the utilization data every second:
-		dataLoader = new DataLoader(paradigm, true);
+		dataLoader = new DataLoader(paradigm, false);
 		dataLoader.getDataEverySecond();
 		
 		// Load the two scenes:

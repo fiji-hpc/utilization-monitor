@@ -1,5 +1,7 @@
 package cz.it4i.monitor;
 
+import javax.swing.JOptionPane;
+
 import org.scijava.ItemIO;
 import org.scijava.command.Command;
 import org.scijava.parallel.ParallelService;
@@ -26,8 +28,16 @@ public class UtilizationMonitor implements Command {
 		if (paradigm == null) {
 			if (service.getParadigm() instanceof MultipleHostParadigm) {
 				paradigm = (MultipleHostParadigm) service.getParadigm();
+				if (paradigm.getHosts().isEmpty()) {
+					String message = "There are no nodes!";
+					ij.log().error(message);
+					JOptionPane.showMessageDialog(null, message);
+					return;
+				}
 			} else {
-				ij.log().error("The utilization-monitor plugin works only with MultipleHostParadigm!");
+				String message = "The utilization-monitor plugin works only with MultipleHostParadigm!";
+				ij.log().error(message);
+				JOptionPane.showMessageDialog(null, message);
 				return;
 			}
 		}
