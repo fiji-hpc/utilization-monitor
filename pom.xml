@@ -54,6 +54,30 @@
 		</contributor>
 	</contributors>
 
+	<mailingLists>
+		<mailingList>
+			<name>Image.sc Forum</name>
+			<archive>https://forum.image.sc/tags/utilization-monitor</archive>
+		</mailingList>
+	</mailingLists>
+
+	<scm>
+		<connection>scm:git:git://github.com/imagej/imagej-server</connection>
+		<developerConnection>scm:git:git@github.com:imagej/imagej-server</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/fiji-hpc/utilization-monitor</url>
+	</scm>
+	
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/imagej/imagej-server</url>
+	</issueManagement>
+	
+	<ciManagement>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/imagej/imagej-server</url>
+	</ciManagement>
+
 	<properties>
 		<package-name>cz.it4i.imagej</package-name>
 		<main-class>cz.it4i.imagej.UtilizationMonitor</main-class>
@@ -99,12 +123,12 @@
 		<dependency>
 			<groupId>org.scijava</groupId>
 			<artifactId>scijava-parallel</artifactId>
-			<version>6.2.0-SNAPSHOT</version>
+			<version>6.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.scijava</groupId>
 			<artifactId>scijava-parallel-fst</artifactId>
-			<version>3.1.0-SNAPSHOT</version>
+			<version>3.1.0</version>
 		</dependency>
 
 		<dependency>
