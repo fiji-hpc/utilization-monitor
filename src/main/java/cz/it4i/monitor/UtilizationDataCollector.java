@@ -11,6 +11,7 @@ import org.scijava.plugin.Plugin;
 
 import com.sun.management.OperatingSystemMXBean;
 
+@SuppressWarnings("restriction")
 @Plugin(headless = true, type = Command.class, menuPath = "Plugins>Utilities>Utilization Data Collector", visible = true)
 public class UtilizationDataCollector implements Command {
 
