@@ -1,6 +1,7 @@
 package cz.it4i.monitor;
 
 import java.awt.Dimension;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -48,7 +49,11 @@ public class MainAppFrame {
 		this.ij = ij;
 		this.paradigm = paradigm;
 		this.frame = new JFrame();
-		this.frame.setTitle(" Utilization Monitor ");
+		this.frame.setTitle(" Utilization Monitor ");		
+	}
+	
+	public void close() {
+		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 	}
 
 	/**
@@ -72,7 +77,7 @@ public class MainAppFrame {
 
 	public void initFX(JFXPanel aFxPanel) {
 		// Get the utilization data every second:
-		dataLoader = new DataLoader(paradigm, new RealDataGenerator());
+		dataLoader = new DataLoader(paradigm, new RealDataGenerator(), this);
 		dataLoader.getDataEverySecond();
 
 		// Load the two scenes:

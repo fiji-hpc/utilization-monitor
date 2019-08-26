@@ -10,6 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import cz.it4i.monitor.DataGenerator;
+import cz.it4i.monitor.MainAppFrame;
 import cz.it4i.parallel.MultipleHostParadigm;
 import cz.it4i.parallel.ui.SimpleDialog;
 import javafx.application.Platform;
@@ -120,13 +121,16 @@ public class DataLoader {
 
 	private DataGenerator dataGenerator;
 
+	private MainAppFrame mainAppFrame;
+
 	// Change data generator to use real or fake data, fake data are useful in
 	// order to test the GUI.
-	public DataLoader(MultipleHostParadigm paradigm,
-		DataGenerator dataGenerator)
+	public DataLoader(MultipleHostParadigm paradigm, DataGenerator dataGenerator,
+		MainAppFrame mainAppFrame)
 	{
 		this.paradigm = paradigm;
 		this.dataGenerator = dataGenerator;
+		this.mainAppFrame = mainAppFrame;
 	}
 
 	public void getDataEverySecond() {
@@ -277,9 +281,15 @@ public class DataLoader {
 
 		// Get the data:
 		allData = dataGenerator.generate(paradigm);
-		if(allData.isEmpty()) {
+
+		// If there were no data returned then the paradigm is no longer inactive.
+		if (allData.isEmpty()) {
+			// Stop collecting data and close the utilization-monitor:
 			stopUpdatingData();
-			SimpleDialog.showError("Paradigm is not active", "Please close the window, activate a paradigm and try again.");
+			SimpleDialog.showError("Paradigm is not active",
+				"Please close this error dialog, activate a paradigm and try again.");
+			mainAppFrame.close();
+			return;
 		}
 
 		// Count the number of nodes from the first response:
