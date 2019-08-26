@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import cz.it4i.monitor.DataGenerator;
 import cz.it4i.parallel.MultipleHostParadigm;
+import cz.it4i.parallel.ui.SimpleDialog;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -276,6 +277,10 @@ public class DataLoader {
 
 		// Get the data:
 		allData = dataGenerator.generate(paradigm);
+		if(allData.isEmpty()) {
+			stopUpdatingData();
+			SimpleDialog.showError("Paradigm is not active", "Please close the window, activate a paradigm and try again.");
+		}
 
 		// Count the number of nodes from the first response:
 		if (firstTime) {
