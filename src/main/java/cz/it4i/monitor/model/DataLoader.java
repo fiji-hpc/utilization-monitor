@@ -1,3 +1,4 @@
+
 package cz.it4i.monitor.model;
 
 import java.util.ArrayList;
@@ -25,29 +26,42 @@ import lombok.Setter;
 
 @Data
 public class DataLoader {
-	private SimpleIntegerProperty selectedNodeProperty = new SimpleIntegerProperty();
 
-	private SimpleIntegerProperty availableProcessorsProperty = new SimpleIntegerProperty();
+	private SimpleIntegerProperty selectedNodeProperty =
+		new SimpleIntegerProperty();
 
-	private SimpleDoubleProperty totalPhysicalMemorySizeProperty = new SimpleDoubleProperty();
+	private SimpleIntegerProperty availableProcessorsProperty =
+		new SimpleIntegerProperty();
 
-	private SimpleDoubleProperty freePhysicalMemorySizeProperty = new SimpleDoubleProperty();
+	private SimpleDoubleProperty totalPhysicalMemorySizeProperty =
+		new SimpleDoubleProperty();
 
-	private SimpleDoubleProperty systemCpuLoadProperty = new SimpleDoubleProperty();
+	private SimpleDoubleProperty freePhysicalMemorySizeProperty =
+		new SimpleDoubleProperty();
 
-	private SimpleDoubleProperty memoryUtilizationProperty = new SimpleDoubleProperty();
+	private SimpleDoubleProperty systemCpuLoadProperty =
+		new SimpleDoubleProperty();
 
-	private SimpleDoubleProperty committedVirtualMemorySizeProperty = new SimpleDoubleProperty();
+	private SimpleDoubleProperty memoryUtilizationProperty =
+		new SimpleDoubleProperty();
 
-	private SimpleDoubleProperty totalSwapSpaceSizeProperty = new SimpleDoubleProperty();
+	private SimpleDoubleProperty committedVirtualMemorySizeProperty =
+		new SimpleDoubleProperty();
 
-	private SimpleDoubleProperty freeSwapSpaceSizeProperty = new SimpleDoubleProperty();
+	private SimpleDoubleProperty totalSwapSpaceSizeProperty =
+		new SimpleDoubleProperty();
 
-	private SimpleDoubleProperty processCpuLoadProperty = new SimpleDoubleProperty();
+	private SimpleDoubleProperty freeSwapSpaceSizeProperty =
+		new SimpleDoubleProperty();
 
-	private SimpleDoubleProperty processCpuTimeProperty = new SimpleDoubleProperty();
+	private SimpleDoubleProperty processCpuLoadProperty =
+		new SimpleDoubleProperty();
 
-	private SimpleDoubleProperty systemLoadAverageProperty = new SimpleDoubleProperty();
+	private SimpleDoubleProperty processCpuTimeProperty =
+		new SimpleDoubleProperty();
+
+	private SimpleDoubleProperty systemLoadAverageProperty =
+		new SimpleDoubleProperty();
 
 	private SimpleStringProperty nameProperty = new SimpleStringProperty();
 
@@ -61,24 +75,26 @@ public class DataLoader {
 
 	private SimpleStringProperty vmVersionProperty = new SimpleStringProperty();
 
-	private ObservableList<String> classPathObservableList = FXCollections.observableArrayList();
+	private ObservableList<String> classPathObservableList = FXCollections
+		.observableArrayList();
 
-	private ObservableList<XYChart.Series<Double, Double>> cpuObservableDataSeries = FXCollections
-			.observableArrayList();
+	private ObservableList<XYChart.Series<Double, Double>> cpuObservableDataSeries =
+		FXCollections.observableArrayList();
 
-	private ObservableList<XYChart.Series<Double, Double>> memoryObservableDataSeries = FXCollections
-			.observableArrayList();
+	private ObservableList<XYChart.Series<Double, Double>> memoryObservableDataSeries =
+		FXCollections.observableArrayList();
 
-	private ObservableList<XYChart.Series<Double, Double>> swapObservableDataSeries = FXCollections
-			.observableArrayList();
+	private ObservableList<XYChart.Series<Double, Double>> swapObservableDataSeries =
+		FXCollections.observableArrayList();
 
-	private ObservableList<XYChart.Series<Double, Double>> processObservableDataSeries = FXCollections
-			.observableArrayList();
+	private ObservableList<XYChart.Series<Double, Double>> processObservableDataSeries =
+		FXCollections.observableArrayList();
 
-	private ObservableList<XYChart.Series<Double, Double>> averageObservableDataSeries = FXCollections
-			.observableArrayList();
+	private ObservableList<XYChart.Series<Double, Double>> averageObservableDataSeries =
+		FXCollections.observableArrayList();
 
-	private ObservableList<NodeInfo> tableData = FXCollections.observableArrayList();
+	private ObservableList<NodeInfo> tableData = FXCollections
+		.observableArrayList();
 
 	private int numberOfNodes = 0;
 
@@ -105,15 +121,17 @@ public class DataLoader {
 
 	// Change data generator to use real or fake data, fake data are useful in
 	// order to test the GUI.
-	public DataLoader(MultipleHostParadigm paradigm, DataGenerator dataGenerator) {
+	public DataLoader(MultipleHostParadigm paradigm,
+		DataGenerator dataGenerator)
+	{
 		this.paradigm = paradigm;
 		this.dataGenerator = dataGenerator;
 	}
 
 	public void getDataEverySecond() {
 		scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-		scheduledExecutorService.scheduleAtFixedRate(() -> Platform.runLater(this::updateObservables), 0, 1,
-				TimeUnit.SECONDS);
+		scheduledExecutorService.scheduleAtFixedRate(() -> Platform.runLater(
+			this::updateObservables), 0, 1, TimeUnit.SECONDS);
 	}
 
 	public void updateObservables() {
@@ -125,7 +143,8 @@ public class DataLoader {
 		}
 
 		// Update the data series in the charts:
-		int historySize = this.nodeInfoList.get(selectedNode).getNumberOfItemsInHistory();
+		int historySize = this.nodeInfoList.get(selectedNode)
+			.getNumberOfItemsInHistory();
 		Series<Double, Double> cpuSeries = new Series<>();
 		Series<Double, Double> memorySeries = new Series<>();
 		Series<Double, Double> swapSeries = new Series<>();
@@ -135,29 +154,38 @@ public class DataLoader {
 			NodeInfo selectedNodeInfo = this.nodeInfoList.get(selectedNode);
 
 			// Set the observable properties:
-			Long totalPhysicalMemorySize = (Long) selectedNodeInfo.getDataFromHistory(time, "totalPhysicalMemorySize");
-			totalPhysicalMemorySizeProperty.set(totalPhysicalMemorySize * Math.pow(10, -9));
+			long totalPhysicalMemorySize = ((Number) selectedNodeInfo
+				.getDataFromHistory(time, "totalPhysicalMemorySize")).longValue();
+			totalPhysicalMemorySizeProperty.set(totalPhysicalMemorySize * Math.pow(10,
+				-9));
 
-			Integer availableProcessors = (Integer) selectedNodeInfo.getDataFromHistory(time, "availableProcessors");
+			Integer availableProcessors = (Integer) selectedNodeInfo
+				.getDataFromHistory(time, "availableProcessors");
 			availableProcessorsProperty.set(availableProcessors.intValue());
 
-			Long totalSwapSpaceSize = (Long) selectedNodeInfo.getDataFromHistory(time, "totalSwapSpaceSize");
+			long totalSwapSpaceSize = ((Number) selectedNodeInfo.getDataFromHistory(
+				time, "totalSwapSpaceSize")).longValue();
 			totalSwapSpaceSizeProperty.set(totalSwapSpaceSize * Math.pow(10, -9));
 
-			Long freeSwapSpaceSize = (Long) selectedNodeInfo.getDataFromHistory(time, "freeSwapSpaceSize");
+			long freeSwapSpaceSize = ((Number) selectedNodeInfo.getDataFromHistory(
+				time, "freeSwapSpaceSize")).longValue();
 			freeSwapSpaceSizeProperty.set(freeSwapSpaceSize * Math.pow(10, -9));
 
-			Long committedVirtualMemorySize = (Long) selectedNodeInfo.getDataFromHistory(time,
-					"committedVirtualMemorySize");
-			committedVirtualMemorySizeProperty.set(committedVirtualMemorySize * Math.pow(10, -9));
+			long committedVirtualMemorySize = ((Number) selectedNodeInfo
+				.getDataFromHistory(time, "committedVirtualMemorySize")).longValue();
+			committedVirtualMemorySizeProperty.set(committedVirtualMemorySize * Math
+				.pow(10, -9));
 
-			Double processCpuLoad = (Double) selectedNodeInfo.getDataFromHistory(time, "processCpuLoad");
+			Double processCpuLoad = (Double) selectedNodeInfo.getDataFromHistory(time,
+				"processCpuLoad");
 			processCpuLoadProperty.set(processCpuLoad * 100);
 
-			Long processCpuTime = (Long) selectedNodeInfo.getDataFromHistory(time, "processCpuTime");
+			long processCpuTime = ((Number) selectedNodeInfo.getDataFromHistory(time,
+				"processCpuTime")).longValue();
 			processCpuTimeProperty.set(processCpuTime * Math.pow(10, -9));
 
-			Double systemLoadAverage = (Double) selectedNodeInfo.getDataFromHistory(time, "systemLoadAverage");
+			Double systemLoadAverage = (Double) selectedNodeInfo.getDataFromHistory(
+				time, "systemLoadAverage");
 			systemLoadAverageProperty.set(systemLoadAverage);
 
 			String name = (String) selectedNodeInfo.getDataFromHistory(time, "name");
@@ -166,26 +194,33 @@ public class DataLoader {
 			String arch = (String) selectedNodeInfo.getDataFromHistory(time, "arch");
 			archProperty.set(arch);
 
-			String version = (String) selectedNodeInfo.getDataFromHistory(time, "version");
+			String version = (String) selectedNodeInfo.getDataFromHistory(time,
+				"version");
 			versionProperty.set(version);
 
-			String vmName = (String) selectedNodeInfo.getDataFromHistory(time, "vmName");
+			String vmName = (String) selectedNodeInfo.getDataFromHistory(time,
+				"vmName");
 			vmNameProperty.set(vmName);
 
-			String vmVendor = (String) selectedNodeInfo.getDataFromHistory(time, "vmVendor");
+			String vmVendor = (String) selectedNodeInfo.getDataFromHistory(time,
+				"vmVendor");
 			vmVendorProperty.set(vmVendor);
 
-			String vmVersion = (String) selectedNodeInfo.getDataFromHistory(time, "vmVersion");
+			String vmVersion = (String) selectedNodeInfo.getDataFromHistory(time,
+				"vmVersion");
 			vmVersionProperty.set(vmVersion);
 
 			// Get the class path and spit it in lines:
-			String classPath = (String) selectedNodeInfo.getDataFromHistory(time, "classPath");
-			List<String> tempClassPathList = Arrays.asList(classPath.split("\\s*;\\s*"));
+			String classPath = (String) selectedNodeInfo.getDataFromHistory(time,
+				"classPath");
+			List<String> tempClassPathList = Arrays.asList(classPath.split(
+				"\\s*;\\s*"));
 			for (int index = 0; index < tempClassPathList.size(); index++) {
 				String aPath = tempClassPathList.get(index);
 				if (index < classPathObservableList.size()) {
 					classPathObservableList.set(index, aPath);
-				} else {
+				}
+				else {
 					classPathObservableList.add(aPath);
 				}
 			}
@@ -195,20 +230,30 @@ public class DataLoader {
 			swapSeries.setName("Swap Utilization");
 			processSeries.setName("Process Load");
 			averageSeries.setName("System Load Average");
-			Long uptime = (Long) selectedNodeInfo.getDataFromHistory(time, "uptime");
-			Double cpuUtilization = (Double) selectedNodeInfo.getDataFromHistory(time, "systemCpuLoad");
+			long uptime = ((Number) selectedNodeInfo.getDataFromHistory(time,
+				"uptime")).longValue();
+			Double cpuUtilization = (Double) selectedNodeInfo.getDataFromHistory(time,
+				"systemCpuLoad");
 			systemCpuLoadProperty.set(cpuUtilization * 100);
-			Double memoryUtilization = (Double) selectedNodeInfo.getDataFromHistory(time, "memoryUtilization");
+			Double memoryUtilization = (Double) selectedNodeInfo.getDataFromHistory(
+				time, "memoryUtilization");
 			memoryUtilizationProperty.set(memoryUtilization * 100);
-			Long freePhysicalMemorySize = (Long) selectedNodeInfo.getDataFromHistory(time, "freePhysicalMemorySize");
-			freePhysicalMemorySizeProperty.set(((double) freePhysicalMemorySize) / Math.pow(10, 9));
+			long freePhysicalMemorySize = ((Number) selectedNodeInfo
+				.getDataFromHistory(time, "freePhysicalMemorySize")).longValue();
+			freePhysicalMemorySizeProperty.set(freePhysicalMemorySize /
+				Math.pow(10, 9));
 
-			cpuSeries.getData().add(new XYChart.Data<>(uptime / 1000.0, cpuUtilization * 100));
-			memorySeries.getData().add(new XYChart.Data<>(uptime / 1000.0, memoryUtilization * 100));
+			cpuSeries.getData().add(new XYChart.Data<>(uptime / 1000.0,
+				cpuUtilization * 100));
+			memorySeries.getData().add(new XYChart.Data<>(uptime / 1000.0,
+				memoryUtilization * 100));
 			swapSeries.getData().add(new XYChart.Data<>(uptime / 1000.0,
-					(totalSwapSpaceSize - freeSwapSpaceSize) / (double) totalSwapSpaceSize * 100));
-			processSeries.getData().add(new XYChart.Data<>(processCpuTime * Math.pow(10, -9), processCpuLoad * 100));
-			averageSeries.getData().add(new XYChart.Data<>(uptime / 1000.0, systemLoadAverage * 100));
+				(totalSwapSpaceSize - freeSwapSpaceSize) / (double) totalSwapSpaceSize *
+					100));
+			processSeries.getData().add(new XYChart.Data<>(processCpuTime * Math.pow(
+				10, -9), processCpuLoad * 100));
+			averageSeries.getData().add(new XYChart.Data<>(uptime / 1000.0,
+				systemLoadAverage * 100));
 		}
 		if (cpuObservableDataSeries.isEmpty()) {
 			cpuObservableDataSeries.add(cpuSeries);
@@ -216,7 +261,8 @@ public class DataLoader {
 			swapObservableDataSeries.add(swapSeries);
 			processObservableDataSeries.add(processSeries);
 			averageObservableDataSeries.add(averageSeries);
-		} else {
+		}
+		else {
 			cpuObservableDataSeries.set(0, cpuSeries);
 			memoryObservableDataSeries.set(0, memorySeries);
 			swapObservableDataSeries.set(0, swapSeries);
