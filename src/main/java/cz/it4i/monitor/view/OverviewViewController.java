@@ -182,6 +182,6 @@ public class OverviewViewController {
 
 		mainAppFrame.getDataLoader().updateObservables();
 
-		mainAppFrame.getFxPanel().setScene(mainAppFrame.getNodeScene());
+		mainAppFrame.getStage().setScene(mainAppFrame.getNodeScene());
 	}
 }

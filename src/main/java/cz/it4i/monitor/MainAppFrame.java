@@ -1,20 +1,20 @@
+
 package cz.it4i.monitor;
 
-import java.awt.Dimension;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
-
-import javax.swing.JFrame;
 
 import cz.it4i.monitor.model.DataLoader;
 import cz.it4i.monitor.view.NodeViewController;
 import cz.it4i.monitor.view.OverviewViewController;
 import cz.it4i.parallel.MultipleHostParadigm;
+import cz.it4i.swing_javafx_ui.JavaFXRoutines;
 import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import lombok.Getter;
 import lombok.Setter;
 import net.imagej.ImageJ;
@@ -24,10 +24,6 @@ public class MainAppFrame {
 	@Getter
 	@Setter
 	private DataLoader dataLoader;
-
-	@Getter
-	@Setter
-	private JFXPanel fxPanel;
 
 	@Getter
 	@Setter
@@ -42,40 +38,47 @@ public class MainAppFrame {
 
 	private ImageJ ij;
 
-	private JFrame frame;
+	@Getter
+	private Stage stage;
 
 	public MainAppFrame(ImageJ ij, MultipleHostParadigm paradigm) {
 		ij.context().inject(this);
 		this.ij = ij;
 		this.paradigm = paradigm;
-		this.frame = new JFrame();
-		this.frame.setTitle(" Utilization Monitor ");		
+
+		JavaFXRoutines.runOnFxThread(() -> this.stage = createStage(
+			" Utilization Monitor "));
 	}
-	
+
+	private Stage createStage(String windowTitle) {
+		this.stage = new Stage();
+		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.setResizable(false);
+		stage.setTitle(windowTitle);
+		stage.initOwner(null);
+
+		return stage;
+	}
+
 	public void close() {
-		frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+		this.stage.close();
 	}
 
-	/**
-	 * Create the JFXPanel that make the link between Swing (IJ) and JavaFX plugin.
-	 */
 	public void init() {
-		fxPanel = new JFXPanel();
-		this.frame.add(fxPanel);
-		this.frame.setVisible(true);
 
-		// The call to runLater() avoid a mix between JavaFX thread and Swing thread.
-		Platform.runLater(() -> initFX(fxPanel));
-
-		this.frame.addWindowListener(new java.awt.event.WindowAdapter() {
-			@Override
-			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-				dataLoader.stopUpdatingData();
-			}
+		// The call to runLater() avoid a mix between JavaFX thread and Swing
+		// thread.
+		Platform.runLater(() -> {
+			initFX(this.stage);
+			this.stage.showAndWait();
 		});
+
+		// On closing the stage stop updating the utilization-monitor
+		// samples.
+		stage.setOnCloseRequest((WindowEvent we) -> dataLoader.stopUpdatingData());
 	}
 
-	public void initFX(JFXPanel aFxPanel) {
+	public void initFX(Stage newStage) {
 		// Get the utilization data every second:
 		dataLoader = new DataLoader(paradigm, new RealDataGenerator(), this);
 		dataLoader.getDataEverySecond();
@@ -101,19 +104,13 @@ public class MainAppFrame {
 			NodeViewController nodeViewController = newLoader.getController();
 			nodeViewController.setMainApp(this);
 			nodeViewController.initializeBindings();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			ij.log().error(e.toString());
 		}
 		overviewScene = new Scene(overviewFxml);
 		nodeScene = new Scene(nodeFxml);
 
-		aFxPanel.setScene(overviewScene);
-		this.frame.setSize(600, 800);
-
-		// Set a reasonable minimum allowed size:
-		Dimension minimum = new Dimension(550, 650);
-		this.frame.setMinimumSize(minimum);
-
-		aFxPanel.setVisible(true);
+		newStage.setScene(overviewScene);
 	}
 }

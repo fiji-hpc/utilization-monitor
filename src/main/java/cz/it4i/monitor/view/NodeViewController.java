@@ -220,7 +220,7 @@ public class NodeViewController {
 
 	@FXML
 	private void handleOverview() {
-		mainAppFrame.getFxPanel().setScene(mainAppFrame.getOverviewScene());
+		mainAppFrame.getStage().setScene(mainAppFrame.getOverviewScene());
 	}
 
 	public void setMainApp(MainAppFrame mainAppFrame) {
