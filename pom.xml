@@ -64,12 +64,12 @@
 		<tag>HEAD</tag>
 		<url>https://github.com/fiji-hpc/utilization-monitor</url>
 	</scm>
-	
+
 	<issueManagement>
 		<system>GitHub Issues</system>
 		<url>https://github.com/fiji-hpc/utilization-monitor/issues</url>
 	</issueManagement>
-	
+
 	<ciManagement>
 		<system>none</system>
 	</ciManagement>
@@ -94,6 +94,11 @@
 	</repositories>
 
 	<dependencies>
+		<dependency>
+			<groupId>it4i-fiji</groupId>
+			<artifactId>swing-javafx-ui</artifactId>
+			<version>0.2.0</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -124,7 +129,7 @@
 			<optional>true</optional>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>

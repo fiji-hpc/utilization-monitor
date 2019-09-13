@@ -12,7 +12,8 @@ import org.scijava.plugin.Plugin;
 import com.sun.management.OperatingSystemMXBean;
 
 @SuppressWarnings("restriction")
-@Plugin(headless = true, type = Command.class, menuPath = "Plugins>Utilities>Utilization Data Collector", visible = true)
+@Plugin(headless = true, type = Command.class,
+	menuPath = "Plugins>Utilities>Utilization Data Collector", visible = true)
 public class UtilizationDataCollector implements Command {
 
 	// CPU utilization metrics:
@@ -83,7 +84,8 @@ public class UtilizationDataCollector implements Command {
 		uptime = runtimeBean.getUptime();
 
 		// CPU:
-		OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
+		OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(
+			OperatingSystemMXBean.class);
 
 		processCpuLoad = osBean.getProcessCpuLoad();
 		systemCpuLoad = osBean.getSystemCpuLoad();
@@ -97,7 +99,8 @@ public class UtilizationDataCollector implements Command {
 		// Size measurements are in bytes:
 		totalPhysicalMemorySize = osBean.getTotalPhysicalMemorySize();
 		freePhysicalMemorySize = osBean.getFreePhysicalMemorySize();
-		double usedPhysicalMemory = (double) totalPhysicalMemorySize - (double) freePhysicalMemorySize;
+		double usedPhysicalMemory = (double) totalPhysicalMemorySize -
+			(double) freePhysicalMemorySize;
 
 		// Calculate the utilization (in [0.0,1.0] interval):
 		memoryUtilization = usedPhysicalMemory / totalPhysicalMemorySize;

@@ -12,7 +12,8 @@ import java.util.concurrent.TimeUnit;
 import cz.it4i.monitor.DataGenerator;
 import cz.it4i.monitor.MainAppFrame;
 import cz.it4i.parallel.MultipleHostParadigm;
-import cz.it4i.parallel.ui.SimpleDialog;
+import cz.it4i.swing_javafx_ui.JavaFXRoutines;
+import cz.it4i.swing_javafx_ui.SimpleDialog;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -245,8 +246,8 @@ public class DataLoader {
 			memoryUtilizationProperty.set(memoryUtilization * 100);
 			long freePhysicalMemorySize = ((Number) selectedNodeInfo
 				.getDataFromHistory(time, "freePhysicalMemorySize")).longValue();
-			freePhysicalMemorySizeProperty.set(freePhysicalMemorySize /
-				Math.pow(10, 9));
+			freePhysicalMemorySizeProperty.set(freePhysicalMemorySize / Math.pow(10,
+				9));
 
 			cpuSeries.getData().add(new XYChart.Data<>(uptime / 1000.0,
 				cpuUtilization * 100));
@@ -286,8 +287,9 @@ public class DataLoader {
 		if (allData.isEmpty()) {
 			// Stop collecting data and close the utilization-monitor:
 			stopUpdatingData();
-			SimpleDialog.showError("Paradigm is not active",
-				"Please close this error dialog, activate a paradigm and try again.");
+			JavaFXRoutines.runOnFxThread(() -> SimpleDialog.showError(
+				"Paradigm is not active",
+				"Please close this error dialog, activate a paradigm and try again."));
 			mainAppFrame.close();
 			return;
 		}
