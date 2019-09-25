@@ -30,8 +30,8 @@ public class UtilizationMonitor implements Command {
 	public void run() {
 		// Check if the utilization monitor should run:
 		if (paradigm == null) {
-			if (service.getParadigm() instanceof MultipleHostParadigm) {
-				paradigm = (MultipleHostParadigm) service.getParadigm();
+			paradigm = service.getParadigmOfType(MultipleHostParadigm.class);
+			if (paradigm != null) {
 				if (paradigm.getHosts().isEmpty()) {
 					String message = "There are no nodes!";
 					ij.log().error(message);
