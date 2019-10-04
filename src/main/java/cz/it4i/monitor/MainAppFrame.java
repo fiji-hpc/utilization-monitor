@@ -8,7 +8,6 @@ import cz.it4i.monitor.view.NodeViewController;
 import cz.it4i.monitor.view.OverviewViewController;
 import cz.it4i.parallel.MultipleHostParadigm;
 import cz.it4i.swing_javafx_ui.JavaFXRoutines;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -52,7 +51,7 @@ public class MainAppFrame {
 
 	private Stage createStage(String windowTitle) {
 		this.stage = new Stage();
-		stage.initModality(Modality.APPLICATION_MODAL);
+		stage.initModality(Modality.NONE);
 		stage.setResizable(false);
 		stage.setTitle(windowTitle);
 		stage.initOwner(null);
@@ -68,14 +67,15 @@ public class MainAppFrame {
 
 		// The call to runLater() avoid a mix between JavaFX thread and Swing
 		// thread.
-		Platform.runLater(() -> {
+		JavaFXRoutines.runOnFxThread(() -> {
 			initFX(this.stage);
-			this.stage.showAndWait();
-		});
+			this.stage.show();
 
-		// On closing the stage stop updating the utilization-monitor
-		// samples.
-		stage.setOnCloseRequest((WindowEvent we) -> dataLoader.stopUpdatingData());
+			// On closing the stage stop updating the utilization-monitor
+			// samples.
+			stage.setOnCloseRequest((WindowEvent we) -> dataLoader
+				.stopUpdatingData());
+		});
 	}
 
 	public void initFX(Stage newStage) {
