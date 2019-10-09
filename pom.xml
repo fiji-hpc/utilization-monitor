@@ -14,7 +14,7 @@
 
 	<groupId>it4innovations</groupId>
 	<artifactId>utilization-monitor</artifactId>
-	<version>0.2.0-RC-1</version>
+	<version>0.2.0</version>
 
 	<name>Utilization Monitor</name>
 	<description>This is a plugin that provides compute node CPU and memory utilization feedback to the users.</description>
@@ -125,7 +125,7 @@
 		<dependency>
 			<groupId>org.scijava</groupId>
 			<artifactId>scijava-parallel</artifactId>
-			<version>8.0.0-RC-1</version>
+			<version>8.0.0</version>
 			<optional>true</optional>
 			<scope>provided</scope>
 		</dependency>
