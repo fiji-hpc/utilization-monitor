@@ -8,6 +8,7 @@ import cz.it4i.monitor.view.NodeViewController;
 import cz.it4i.monitor.view.OverviewViewController;
 import cz.it4i.parallel.MultipleHostParadigm;
 import cz.it4i.swing_javafx_ui.JavaFXRoutines;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -67,6 +68,8 @@ public class MainAppFrame {
 
 		// The call to runLater() avoid a mix between JavaFX thread and Swing
 		// thread.
+		Platform.setImplicitExit(false);
+		
 		JavaFXRoutines.runOnFxThread(() -> {
 			initFX(this.stage);
 			this.stage.show();
