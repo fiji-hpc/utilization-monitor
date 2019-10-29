@@ -11,27 +11,23 @@
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane xmlns="http://javafx.com/javafx/8.0.171"
-	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="cz.it4i.monitor.view.NodeViewController">
+<GridPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cz.it4i.monitor.view.NodeViewController">
 	<columnConstraints>
 		<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
 	</columnConstraints>
 	<rowConstraints>
-		<RowConstraints minHeight="10.0" percentHeight="10.0"
-			prefHeight="30.0" vgrow="SOMETIMES" />
-		<RowConstraints minHeight="10.0" percentHeight="90.0"
-			vgrow="SOMETIMES" />
+		<RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+		<RowConstraints minHeight="10.0" percentHeight="90.0" vgrow="SOMETIMES" />
 	</rowConstraints>
 	<children>
 		<GridPane GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
 			<columnConstraints>
 				<ColumnConstraints hgrow="SOMETIMES" />
-				<ColumnConstraints halignment="LEFT"
-					hgrow="ALWAYS" />
+				<ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
 			</columnConstraints>
 			<rowConstraints>
 				<RowConstraints vgrow="SOMETIMES" />
@@ -43,14 +39,12 @@
 						<Font size="24.0" />
 					</font>
 				</Label>
-				<Label fx:id="nodeLabel" text="Label" GridPane.columnIndex="1"
-					GridPane.rowIndex="1">
+				<Label fx:id="nodeLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
 					<font>
 						<Font size="24.0" />
 					</font>
 				</Label>
-				<Button mnemonicParsing="false" onAction="#handleOverview"
-					text="Overview" />
+				<Button mnemonicParsing="false" onAction="#handleOverview" text="Overview" />
 			</children>
 			<GridPane.margin>
 				<Insets />
@@ -59,54 +53,36 @@
 				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 			</padding>
 		</GridPane>
-		<TabPane prefHeight="800.0" prefWidth="600.0"
-			GridPane.rowIndex="1">
+		<TabPane prefHeight="800.0" prefWidth="600.0" GridPane.rowIndex="1">
 			<tabs>
 				<Tab closable="false" text="CPU">
 					<content>
-						<GridPane minHeight="500.0" minWidth="500.0"
-							pickOnBounds="false">
+						<GridPane minHeight="500.0" minWidth="500.0" pickOnBounds="false">
 							<columnConstraints>
 								<ColumnConstraints />
 								<ColumnConstraints hgrow="SOMETIMES" />
 							</columnConstraints>
 							<rowConstraints>
-								<RowConstraints percentHeight="25.0"
-									vgrow="ALWAYS" />
+								<RowConstraints percentHeight="25.0" vgrow="ALWAYS" />
 								<RowConstraints percentHeight="10.0" />
-								<RowConstraints percentHeight="25.0"
-									vgrow="SOMETIMES" />
-								<RowConstraints percentHeight="10.0"
-									vgrow="SOMETIMES" />
-								<RowConstraints minHeight="10.0"
-									percentHeight="25.0" prefHeight="30.0" vgrow="SOMETIMES" />
-								<RowConstraints minHeight="10.0"
-									percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+								<RowConstraints percentHeight="25.0" vgrow="SOMETIMES" />
+								<RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
+								<RowConstraints minHeight="10.0" percentHeight="25.0" prefHeight="30.0" vgrow="SOMETIMES" />
+								<RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
 							</rowConstraints>
 							<children>
-								<LineChart fx:id="cpuUtilizationLineChart"
-									animated="false" GridPane.hgrow="ALWAYS"
-									GridPane.vgrow="ALWAYS">
+								<LineChart fx:id="cpuUtilizationLineChart" animated="false" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
 									<xAxis>
-										<NumberAxis side="BOTTOM"
-											fx:id="xAxisCpuUtilization" />
+										<NumberAxis side="BOTTOM" fx:id="xAxisCpuUtilization" />
 									</xAxis>
 									<yAxis>
 										<NumberAxis fx:id="yAxisCpuUtilization" side="LEFT" />
 									</yAxis>
 								</LineChart>
-								<GridPane GridPane.hgrow="NEVER" GridPane.rowIndex="1"
-									GridPane.vgrow="NEVER">
+								<GridPane GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
 									<columnConstraints>
-										<ColumnConstraints hgrow="SOMETIMES"
-											maxWidth="295.0" minWidth="10.0" percentWidth="30.0"
-											prefWidth="148.0" />
-										<ColumnConstraints hgrow="SOMETIMES"
-											maxWidth="269.0" minWidth="0.0" percentWidth="10.0"
-											prefWidth="132.0" />
-										<ColumnConstraints hgrow="SOMETIMES"
-											maxWidth="402.0" minWidth="10.0" percentWidth="60.0"
-											prefWidth="219.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
+										<ColumnConstraints hgrow="SOMETIMES" />
 									</columnConstraints>
 									<rowConstraints>
 										<RowConstraints />
@@ -114,53 +90,43 @@
 										<RowConstraints />
 									</rowConstraints>
 									<children>
-										<Label text="Available Processors:"
-											GridPane.rowIndex="2">
-											<tooltip>
-												<Tooltip
-													text="Number of processors available to the Java virtual machine." />
-											</tooltip>
-										</Label>
-										<Label fx:id="availableProcessorsLabel" text="Label"
-											GridPane.columnIndex="1" GridPane.rowIndex="2">
-											<font>
-												<Font name="System Bold" size="12.0" />
-											</font>
-										</Label>
-										<Label prefHeight="27.0" prefWidth="153.0"
-											text="System CPU Load:" GridPane.hgrow="ALWAYS"
-											GridPane.vgrow="ALWAYS">
-											<tooltip>
-												<Tooltip
-													text="Recent CPU usage for the whole system." />
-											</tooltip>
-										</Label>
-										<Label fx:id="systemCpuLoadLabel" text="Label"
-											GridPane.columnIndex="1">
-											<font>
-												<Font name="System Bold" size="12.0" />
-											</font>
-										</Label>
-										<Label text="\%" GridPane.columnIndex="2">
-										</Label>
+                              <HBox GridPane.columnIndex="1">
+                                 <children>
+      										<Label fx:id="systemCpuLoadLabel" text="Label">
+      											<font>
+      												<Font name="System Bold" size="12.0" />
+      											</font>
+      										</Label>
+                                    <Label text=" %" />
+                                 </children>
+                              </HBox>
+                              <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <children>
+      										<Label fx:id="availableProcessorsLabel" text="Label">
+      											<font>
+      												<Font name="System Bold" size="12.0" />
+      											</font>
+      										</Label>
+                                 </children>
+                              </HBox>
+                              <Label text="System CPU Load: " />
+                              <Label text="Available Processors: " GridPane.rowIndex="2">
+                                 <tooltip>
+                                    <Tooltip text="Number of processors available to the Java virtual machine." />
+                                 </tooltip>
+                              </Label>
 									</children>
 									<GridPane.margin>
 										<Insets />
 									</GridPane.margin>
 									<padding>
-										<Insets bottom="10.0" left="10.0" right="10.0"
-											top="10.0" />
+										<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 									</padding>
 								</GridPane>
-								<GridPane GridPane.hgrow="NEVER" GridPane.rowIndex="3"
-									GridPane.vgrow="NEVER">
+								<GridPane GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
 									<columnConstraints>
-										<ColumnConstraints hgrow="SOMETIMES"
-											percentWidth="30.0" />
-										<ColumnConstraints hgrow="SOMETIMES"
-											percentWidth="10.0" />
-										<ColumnConstraints hgrow="SOMETIMES"
-											percentWidth="60.0" />
+										<ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
+										<ColumnConstraints hgrow="SOMETIMES" />
 									</columnConstraints>
 									<rowConstraints>
 										<RowConstraints vgrow="SOMETIMES" />
@@ -169,40 +135,40 @@
 									<children>
 										<Label text="Process CPU Load: ">
 											<tooltip>
-												<Tooltip
-													text="Recent CPU usage for the Java Virtual Machine process." />
+												<Tooltip text="Recent CPU usage for the Java Virtual Machine process." />
 											</tooltip>
 										</Label>
-										<Label fx:id="processCpuTimeLabel" text="Label"
-											GridPane.columnIndex="1" GridPane.rowIndex="1">
-											<font>
-												<Font name="System Bold" size="12.0" />
-											</font>
-										</Label>
+                              <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+      										<Label fx:id="processCpuTimeLabel" text="Label">
+      											<font>
+      												<Font name="System Bold" size="12.0" />
+      											</font>
+      										</Label>
+                                    <Label text=" s" />
+                                 </children>
+                              </HBox>
 										<Label text="Process CPU time:" GridPane.rowIndex="1">
 											<tooltip>
-												<Tooltip
-													text="CPU time used by the process on which the Java virtual machine is running." />
+												<Tooltip text="CPU time used by the process on which the Java virtual machine is running." />
 											</tooltip>
 										</Label>
-										<Label fx:id="processCpuLoadLabel" text="Label"
-											GridPane.columnIndex="1">
-											<font>
-												<Font name="System Bold" size="12.0" />
-											</font>
-										</Label>
-										<Label text="\%" GridPane.columnIndex="2" />
-										<Label text="s" GridPane.columnIndex="2"
-											GridPane.rowIndex="1" />
+                              <HBox GridPane.columnIndex="1">
+                                 <children>
+      										<Label fx:id="processCpuLoadLabel" text="Label">
+      											<font>
+      												<Font name="System Bold" size="12.0" />
+      											</font>
+      										</Label>
+                                    <Label text=" %" />
+                                 </children>
+                              </HBox>
 									</children>
 									<padding>
-										<Insets bottom="10.0" left="10.0" right="10.0"
-											top="10.0" />
+										<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 									</padding>
 								</GridPane>
-								<LineChart fx:id="processLoadLineChart"
-									animated="false" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"
-									GridPane.vgrow="ALWAYS">
+								<LineChart fx:id="processLoadLineChart" animated="false" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
 									<xAxis>
 										<NumberAxis side="BOTTOM" fx:id="xAxisProcessLoad" />
 									</xAxis>
@@ -210,8 +176,7 @@
 										<NumberAxis fx:id="yAxisProcessLoad" side="LEFT" />
 									</yAxis>
 								</LineChart>
-								<LineChart fx:id="averageLoadLineChart"
-									animated="false" GridPane.rowIndex="4">
+								<LineChart fx:id="averageLoadLineChart" animated="false" GridPane.rowIndex="4">
 									<xAxis>
 										<NumberAxis side="BOTTOM" fx:id="xAxisAverageLoad" />
 									</xAxis>
@@ -221,12 +186,8 @@
 								</LineChart>
 								<GridPane GridPane.rowIndex="5">
 									<columnConstraints>
-										<ColumnConstraints hgrow="SOMETIMES"
-											percentWidth="30.0" />
-										<ColumnConstraints hgrow="SOMETIMES"
-											percentWidth="10.0" />
-										<ColumnConstraints hgrow="SOMETIMES"
-											percentWidth="60.0" />
+										<ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
+										<ColumnConstraints hgrow="SOMETIMES" />
 									</columnConstraints>
 									<rowConstraints>
 										<RowConstraints vgrow="SOMETIMES" />
@@ -234,20 +195,17 @@
 									<children>
 										<Label text="System Load Average:">
 											<tooltip>
-												<Tooltip
-													text="System load average for the last minute." />
+												<Tooltip text="System load average for the last minute." />
 											</tooltip>
 										</Label>
-										<Label fx:id="systemLoadAverageLabel" text="Label"
-											GridPane.columnIndex="1">
+										<Label fx:id="systemLoadAverageLabel" text="Label" GridPane.columnIndex="1">
 											<font>
 												<Font name="System Bold" size="12.0" />
 											</font>
 										</Label>
 									</children>
 									<padding>
-										<Insets bottom="10.0" left="10.0" right="10.0"
-											top="10.0" />
+										<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 									</padding>
 								</GridPane>
 							</children>
@@ -261,37 +219,24 @@
 								<ColumnConstraints hgrow="SOMETIMES" />
 							</columnConstraints>
 							<rowConstraints>
-								<RowConstraints percentHeight="40.0"
-									vgrow="ALWAYS" />
-								<RowConstraints percentHeight="10.0"
-									vgrow="SOMETIMES" />
-								<RowConstraints percentHeight="40.0"
-									vgrow="SOMETIMES" />
-								<RowConstraints percentHeight="10.0"
-									vgrow="SOMETIMES" />
+								<RowConstraints percentHeight="40.0" vgrow="ALWAYS" />
+								<RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
+								<RowConstraints percentHeight="40.0" vgrow="SOMETIMES" />
+								<RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
 							</rowConstraints>
 							<children>
-								<LineChart fx:id="memoryUtilizationLineChart"
-									animated="false" GridPane.hgrow="ALWAYS"
-									GridPane.vgrow="ALWAYS">
+								<LineChart fx:id="memoryUtilizationLineChart" animated="false" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
 									<xAxis>
-										<NumberAxis side="BOTTOM"
-											fx:id="xAxisMemoryUtilization" />
+										<NumberAxis side="BOTTOM" fx:id="xAxisMemoryUtilization" />
 									</xAxis>
 									<yAxis>
-										<NumberAxis fx:id="yAxisMemoryUtilization"
-											side="LEFT" />
+										<NumberAxis fx:id="yAxisMemoryUtilization" side="LEFT" />
 									</yAxis>
 								</LineChart>
-								<GridPane GridPane.hgrow="NEVER" GridPane.rowIndex="1"
-									GridPane.vgrow="NEVER">
+								<GridPane GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
 									<columnConstraints>
-										<ColumnConstraints hgrow="SOMETIMES"
-											percentWidth="35.0" />
-										<ColumnConstraints hgrow="SOMETIMES"
-											percentWidth="10.0" />
-										<ColumnConstraints hgrow="SOMETIMES"
-											percentWidth="55.0" />
+										<ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
+										<ColumnConstraints hgrow="SOMETIMES" />
 									</columnConstraints>
 									<rowConstraints>
 										<RowConstraints vgrow="SOMETIMES" />
@@ -299,81 +244,70 @@
 										<RowConstraints vgrow="SOMETIMES" />
 									</rowConstraints>
 									<children>
-										<Label prefHeight="27.0" prefWidth="226.0"
-											text="Total Physical Memory Size:" GridPane.rowIndex="1">
+										<Label prefHeight="27.0" prefWidth="226.0" text="Total Physical Memory Size:" GridPane.rowIndex="1">
 											<tooltip>
 												<Tooltip text="Total amount of physical memory." />
 											</tooltip>
 										</Label>
-										<Label fx:id="totalPhysicalMemorySizeLabel" text="Label"
-											GridPane.columnIndex="1" GridPane.rowIndex="1">
-											<font>
-												<Font name="System Bold" size="12.0" />
-											</font>
-										</Label>
-										<Label text="GB" GridPane.columnIndex="2"
-											GridPane.rowIndex="1">
-										</Label>
-										<Label prefHeight="27.0" prefWidth="220.0"
-											text="Free Physical Memory Size:" GridPane.rowIndex="2">
+                              <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+      										<Label fx:id="totalPhysicalMemorySizeLabel" text="Label">
+      											<font>
+      												<Font name="System Bold" size="12.0" />
+      											</font>
+      										</Label>
+                                    <Label text=" GB" />
+                                 </children>
+                              </HBox>
+										<Label prefHeight="27.0" prefWidth="220.0" text="Free Physical Memory Size:" GridPane.rowIndex="2">
 											<tooltip>
 												<Tooltip text="Amount of free physical memory." />
 											</tooltip>
 										</Label>
-										<Label fx:id="freePhysicalMemorySizeLabel" text="Label"
-											GridPane.columnIndex="1" GridPane.rowIndex="2">
-											<font>
-												<Font name="System Bold" size="12.0" />
-											</font>
+                              <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <children>
+      										<Label fx:id="freePhysicalMemorySizeLabel" text="Label">
+      											<font>
+      												<Font name="System Bold" size="12.0" />
+      											</font>
+      										</Label>
+      										<Label text=" GB">
 										</Label>
-										<Label text="GB" GridPane.columnIndex="2"
-											GridPane.rowIndex="2">
-										</Label>
-										<Label prefHeight="27.0" prefWidth="163.0"
-											text="Memory Utilization:">
+                                 </children>
+                              </HBox>
+										<Label prefHeight="27.0" prefWidth="163.0" text="Memory Utilization:">
 											<tooltip>
-												<Tooltip
-													text="Percentage of memory that is currently used." />
+												<Tooltip text="Percentage of memory that is currently used." />
 											</tooltip>
 										</Label>
-										<Label fx:id="memoryUtilizationLabel" text="Label"
-											GridPane.columnIndex="1">
-											<font>
-												<Font name="System Bold" size="12.0" />
-											</font>
+                              <HBox GridPane.columnIndex="1">
+                                 <children>
+      										<Label fx:id="memoryUtilizationLabel" text="Label">
+      											<font>
+      												<Font name="System Bold" size="12.0" />
+      											</font>
+      										</Label>
+      										<Label text=" %">
 										</Label>
-										<Label text="\%" GridPane.columnIndex="2">
-										</Label>
+                                 </children>
+                              </HBox>
 									</children>
 									<padding>
-										<Insets bottom="10.0" left="10.0" right="10.0"
-											top="10.0" />
+										<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 									</padding>
 								</GridPane>
-								<LineChart fx:id="swapUtilizationLineChart"
-									animated="false" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2"
-									GridPane.vgrow="ALWAYS">
+								<LineChart fx:id="swapUtilizationLineChart" animated="false" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
 									<xAxis>
-										<NumberAxis side="BOTTOM"
-											fx:id="xAxisSwapUtilization" />
+										<NumberAxis side="BOTTOM" fx:id="xAxisSwapUtilization" />
 									</xAxis>
 									<yAxis>
-										<NumberAxis fx:id="yAxisSwapUtilization"
-											side="LEFT" />
+										<NumberAxis fx:id="yAxisSwapUtilization" side="LEFT" />
 									</yAxis>
 								</LineChart>
-								<GridPane GridPane.hgrow="NEVER" GridPane.rowIndex="3"
-									GridPane.vgrow="NEVER">
+								<GridPane GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
 									<columnConstraints>
-										<ColumnConstraints hgrow="SOMETIMES"
-											maxWidth="269.0" minWidth="10.0" percentWidth="40.0"
-											prefWidth="216.0" />
-										<ColumnConstraints hgrow="SOMETIMES"
-											maxWidth="260.0" minWidth="0.0" percentWidth="10.0"
-											prefWidth="178.0" />
-										<ColumnConstraints hgrow="SOMETIMES"
-											maxWidth="304.0" minWidth="10.0" percentWidth="50.0"
-											prefWidth="106.0" />
+										<ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
+										<ColumnConstraints hgrow="SOMETIMES" />
 									</columnConstraints>
 									<rowConstraints>
 										<RowConstraints vgrow="SOMETIMES" />
@@ -383,87 +317,81 @@
 									<children>
 										<Label text="Committed Virtual Memory Size:">
 											<tooltip>
-												<Tooltip
-													text="Amount of virtual memory that is guaranteed to be available to the running process." />
+												<Tooltip text="Amount of virtual memory that is guaranteed to be available to the running process." />
 											</tooltip>
 										</Label>
-										<Label fx:id="committedVirtualMemorySizeLabel"
-											text="Label" GridPane.columnIndex="1">
-											<font>
-												<Font name="System Bold" size="12.0" />
-											</font>
-										</Label>
-										<Label text="GB" GridPane.columnIndex="2" />
+                              <HBox GridPane.columnIndex="1">
+                                 <children>
+      										<Label fx:id="committedVirtualMemorySizeLabel" text="Label">
+      											<font>
+      												<Font name="System Bold" size="12.0" />
+      											</font>
+      										</Label>
+      										<Label text=" GB" />
+                                 </children>
+                              </HBox>
 										<Label text="Total Swap Space:" GridPane.rowIndex="1">
 											<tooltip>
 												<Tooltip text="Total amount of swap space." />
 											</tooltip>
 										</Label>
-										<Label fx:id="totalSwapSpaceSizeLabel" text="Label"
-											GridPane.columnIndex="1" GridPane.rowIndex="1">
-											<font>
-												<Font name="System Bold" size="12.0" />
-											</font>
-										</Label>
-										<Label text="GB" GridPane.columnIndex="2"
-											GridPane.rowIndex="1" />
-										<Label text="Free Swap Space Size:"
-											GridPane.rowIndex="2">
+                              <HBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+      										<Label fx:id="totalSwapSpaceSizeLabel" text="Label">
+      											<font>
+      												<Font name="System Bold" size="12.0" />
+      											</font>
+      										</Label>
+      										<Label text=" GB" />
+                                 </children>
+                              </HBox>
+										<Label text="Free Swap Space Size:" GridPane.rowIndex="2">
 											<tooltip>
 												<Tooltip text="Amount of free swap space." />
 											</tooltip>
 										</Label>
-										<Label fx:id="freeSwapSpaceSizeLabel" text="Label"
-											GridPane.columnIndex="1" GridPane.rowIndex="2">
-											<font>
-												<Font name="System Bold" size="12.0" />
-											</font>
-										</Label>
-										<Label text="GB" GridPane.columnIndex="2"
-											GridPane.rowIndex="2" />
+                              <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <children>
+      										<Label fx:id="freeSwapSpaceSizeLabel" text="Label">
+      											<font>
+      												<Font name="System Bold" size="12.0" />
+      											</font>
+      										</Label>
+      										<Label text=" GB" />
+                                 </children>
+                              </HBox>
 									</children>
 									<padding>
-										<Insets bottom="10.0" left="10.0" right="10.0"
-											top="10.0" />
+										<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 									</padding>
 								</GridPane>
 							</children>
 						</GridPane>
 					</content>
 				</Tab>
-				<Tab closable="false"
-					text="OS and Java">
+				<Tab closable="false" text="OS and Java">
 					<content>
 					</content>
 					<content>
 						<GridPane>
 							<columnConstraints>
-								<ColumnConstraints hgrow="SOMETIMES"
-									minWidth="10.0" prefWidth="100.0" />
+								<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
 							</columnConstraints>
 							<rowConstraints>
-								<RowConstraints minHeight="10.0"
-									prefHeight="30.0" vgrow="SOMETIMES" />
-								<RowConstraints minHeight="10.0"
-									percentHeight="70.0" prefHeight="30.0" vgrow="SOMETIMES" />
+								<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+								<RowConstraints minHeight="10.0" percentHeight="70.0" prefHeight="30.0" vgrow="SOMETIMES" />
 							</rowConstraints>
 							<children>
 								<GridPane>
 									<columnConstraints>
-										<ColumnConstraints hgrow="SOMETIMES"
-											percentWidth="30.0" />
-										<ColumnConstraints hgrow="SOMETIMES"
-											percentWidth="70.0" />
+										<ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0" />
+										<ColumnConstraints hgrow="SOMETIMES" percentWidth="70.0" />
 									</columnConstraints>
 									<rowConstraints>
-										<RowConstraints minHeight="10.0"
-											prefHeight="30.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0"
-											prefHeight="30.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0"
-											prefHeight="30.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0"
-											prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 									</rowConstraints>
 									<children>
 										<Label text="Name:" GridPane.rowIndex="1">
@@ -471,8 +399,7 @@
 												<Tooltip text="Operating system name." />
 											</tooltip>
 										</Label>
-										<Label fx:id="nameLabel" text="Label"
-											GridPane.columnIndex="1" GridPane.rowIndex="1">
+										<Label fx:id="nameLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
 											<font>
 												<Font name="System Bold" size="12.0" />
 											</font>
@@ -487,14 +414,12 @@
 												<Tooltip text="Operating system version." />
 											</tooltip>
 										</Label>
-										<Label fx:id="archLabel" text="Label"
-											GridPane.columnIndex="1" GridPane.rowIndex="2">
+										<Label fx:id="archLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
 											<font>
 												<Font name="System Bold" size="12.0" />
 											</font>
 										</Label>
-										<Label fx:id="versionLabel" text="Label"
-											GridPane.columnIndex="1" GridPane.rowIndex="3">
+										<Label fx:id="versionLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
 											<font>
 												<Font name="System Bold" size="12.0" />
 											</font>
@@ -506,62 +431,48 @@
 										</Label>
 									</children>
 									<padding>
-										<Insets bottom="10.0" left="10.0" right="10.0"
-											top="10.0" />
+										<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 									</padding>
 								</GridPane>
 								<GridPane GridPane.rowIndex="1">
 									<columnConstraints>
-										<ColumnConstraints hgrow="SOMETIMES"
-											percentWidth="30.0" />
-										<ColumnConstraints hgrow="SOMETIMES"
-											percentWidth="70.0" />
+										<ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0" />
+										<ColumnConstraints hgrow="SOMETIMES" percentWidth="70.0" />
 									</columnConstraints>
 									<rowConstraints>
-										<RowConstraints minHeight="10.0"
-											percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0"
-											percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0"
-											percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0"
-											percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-										<RowConstraints minHeight="10.0"
-											prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+										<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 									</rowConstraints>
 									<children>
 										<Label text="VM Name:" GridPane.rowIndex="1">
 											<tooltip>
-												<Tooltip
-													text="Name representing the running Java virtual machine." />
+												<Tooltip text="Name representing the running Java virtual machine." />
 											</tooltip>
 										</Label>
-										<Label fx:id="vmNameLabel" text="Label"
-											GridPane.columnIndex="1" GridPane.rowIndex="1">
+										<Label fx:id="vmNameLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
 											<font>
 												<Font name="System Bold" size="12.0" />
 											</font>
 										</Label>
 										<Label text="VM Vendor:" GridPane.rowIndex="2">
 											<tooltip>
-												<Tooltip
-													text="Java virtual machine implementation vendor." />
+												<Tooltip text="Java virtual machine implementation vendor." />
 											</tooltip>
 										</Label>
 										<Label text="VM Version:" GridPane.rowIndex="3">
 											<tooltip>
-												<Tooltip
-													text="Java virtual machine implementation version." />
+												<Tooltip text="Java virtual machine implementation version." />
 											</tooltip>
 										</Label>
-										<Label fx:id="vmVendorLabel" text="Label"
-											GridPane.columnIndex="1" GridPane.rowIndex="2">
+										<Label fx:id="vmVendorLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
 											<font>
 												<Font name="System Bold" size="12.0" />
 											</font>
 										</Label>
-										<Label fx:id="vmVersionLabel" text="Label"
-											GridPane.columnIndex="1" GridPane.rowIndex="3">
+										<Label fx:id="vmVersionLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
 											<font>
 												<Font name="System Bold" size="12.0" />
 											</font>
@@ -573,17 +484,13 @@
 										</Label>
 										<Label text="Class Path:" GridPane.rowIndex="4">
 											<tooltip>
-												<Tooltip
-													text="Java class path that is used by the system class loader to search for class files." />
+												<Tooltip text="Java class path that is used by the system class loader to search for class files." />
 											</tooltip>
 										</Label>
-										<ListView fx:id="classPathListView"
-											prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1"
-											GridPane.rowIndex="4" />
+										<ListView fx:id="classPathListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 									</children>
 									<GridPane.margin>
-										<Insets bottom="10.0" left="10.0" right="10.0"
-											top="10.0" />
+										<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 									</GridPane.margin>
 								</GridPane>
 							</children>
